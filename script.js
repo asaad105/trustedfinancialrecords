@@ -101,6 +101,7 @@
     history: [],
     facts: {}
   };
+  const hasDismissedKey = 'tfr_chat_dismissed';
 
   const appendMessage = (text, role) => {
     const item = document.createElement('p');
@@ -201,6 +202,7 @@
   const closeChat = () => {
     panel.hidden = true;
     toggle.setAttribute('aria-expanded', 'false');
+    try { window.sessionStorage.setItem(hasDismissedKey, '1'); } catch (error) {}
     toggle.focus();
   };
 
@@ -236,5 +238,18 @@
     }
   });
 
-  appendMessage('Hi! I'm the Trusted Financial Records assistant. I can remember what you share and answer follow-up questions.', 'bot');
+
+  const shouldAutoOpen = (() => {
+    try {
+      return !window.sessionStorage.getItem(hasDismissedKey);
+    } catch (error) {
+      return true;
+    }
+  })();
+
+  if (shouldAutoOpen) {
+    setTimeout(openChat, 600);
+  }
+
+  appendMessage("Hi! I'm the Trusted Financial Records assistant. I can remember what you share and answer follow-up questions.", 'bot');
 })();
