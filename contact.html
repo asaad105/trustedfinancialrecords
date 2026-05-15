@@ -15,17 +15,33 @@
 </header>
 <main class="container section">
   <h1>Contact us</h1>
-  <p>Reach out to us for personalized financial solutions.</p>
-  <form id="contactForm" class="contact-form">
-    <label>Name *<input name="name" required /></label>
-    <label>Email address *<input name="email" type="email" required /></label>
-    <label>Message *<textarea name="message" required></textarea></label>
-    <label class="honeypot">Leave this field empty<input name="website" tabindex="-1" autocomplete="off" /></label>
-    <button class="btn" type="submit">Submit form</button>
-    <p id="formStatus" role="status" aria-live="polite"></p>
-  </form>
-  <h2>Location</h2>
-  <p>Trusted Financial Records Company<br/>Calgary, Alberta, Canada</p>
+  <div class="contact-location-grid">
+    <div>
+      <p>Reach out to us for personalized financial solutions.</p>
+      <form id="contactForm" class="contact-form">
+        <label>Name *<input name="name" required /></label>
+        <label>Email address *<input name="email" type="email" required /></label>
+        <label>Message *<textarea name="message" required></textarea></label>
+        <label class="honeypot">Leave this field empty<input name="website" tabindex="-1" autocomplete="off" /></label>
+        <button class="btn" type="submit">Submit form</button>
+        <p id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <div>
+      <h2>Location</h2>
+      <p>Trusted Financial Records Company<br/>Calgary, Alberta, Canada</p>
+      <div class="map-embed">
+        <iframe
+          title="Trusted Financial Records Company location map"
+          src="https://www.google.com/maps?q=Calgary,Alberta,Canada&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
 </main>
 <footer class="site-footer"><div class="container"><p>© 2024 - 2026 Trusted Financial Records Company</p></div></footer>
 <script src="script.js"></script>
