@@ -106,8 +106,15 @@
 
   const launcher = document.getElementById('chat-launcher');
   const chatWindow = document.getElementById('chat-window');
+  const greeting = document.getElementById('chatGreeting');
+  const prompt = document.getElementById('chatPrompt');
+  const showAppointmentFormButton = document.getElementById('showAppointmentForm');
   const form = document.getElementById('appointment-form');
   const confirmation = document.getElementById('confirmation');
+  const submitButton = document.getElementById('bookAppointmentButton');
+
+  greeting.textContent = 'Hi! I’m the Trusted Financial Records assistant.';
+  prompt.textContent = 'Need help with bookkeeping or AP support? Book an appointment and our team will follow up.';
 
   launcher.addEventListener('click', () => {
     const isOpen = !chatWindow.hidden;
@@ -115,20 +122,38 @@
     launcher.setAttribute('aria-expanded', String(!isOpen));
   });
 
+  showAppointmentFormButton.addEventListener('click', () => {
+    form.classList.remove('hidden');
+    showAppointmentFormButton.classList.add('hidden');
+    confirmation.classList.add('hidden');
+  });
+
   form.onsubmit = async (event) => {
     event.preventDefault();
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
     const data = new FormData(form);
-    const response = await fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { Accept: 'application/json' }
-    });
+    let response;
 
-    if (response.ok) {
-      form.classList.add('hidden');
-      confirmation.classList.remove('hidden');
-    } else {
-      alert('Oops! There was a problem submitting your request.');
+    try {
+      response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' }
+      });
+
+      if (response.ok) {
+        form.classList.add('hidden');
+        confirmation.classList.remove('hidden');
+        form.reset();
+      } else {
+        alert('Oops! There was a problem submitting your request.');
+      }
+    } catch (error) {
+      alert('Unable to submit right now. Please try again in a moment.');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Book Appointment';
     }
   };
 })();
