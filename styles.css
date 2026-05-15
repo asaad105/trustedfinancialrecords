@@ -159,6 +159,19 @@ main{overflow:hidden}
   font-weight: 700;
 }
 
+
+.chat-cta {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0 10px;
+  border: none;
+  border-radius: 5px;
+  background: #2c3e50;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .hidden {
   display: none;
 }
