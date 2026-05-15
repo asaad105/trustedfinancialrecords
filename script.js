@@ -18,9 +18,14 @@
 
     const name = String(data.get('name')).trim();
     const email = String(data.get('email')).trim();
+    const service = String(data.get('service') || 'General consultation').trim();
+    const appointmentDateTime = String(data.get('appointmentDateTime') || '').trim();
+    const appointmentText = appointmentDateTime
+      ? new Date(appointmentDateTime).toLocaleString()
+      : 'Not provided';
     const message = String(data.get('message')).trim();
     const subject = encodeURIComponent(`Contact form inquiry from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nService: ${service}\nRequested appointment: ${appointmentText}\n\nMessage:\n${message}`);
 
     status.textContent = `Opening your email app to send this message to ${contactEmail}.`;
     window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
