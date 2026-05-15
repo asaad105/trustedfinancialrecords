@@ -45,5 +45,14 @@ nav a[aria-current="page"]{color:#123877}
 .site-footer{background:#fff;border-top:1px solid var(--border);padding:1.3rem 0;margin-top:2rem}
 .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
 .footer-grid p{margin:0;color:#334c71}
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+.contact-form,.location-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1rem;box-shadow:0 8px 20px rgba(18,43,90,.07)}
+.contact-form label{display:block;font-weight:600;color:#1c3e78;margin-bottom:.75rem}
+.contact-form input,.contact-form textarea,.contact-form select{display:block;width:100%;margin-top:.25rem;padding:.62rem .7rem;border:1px solid #c9d7ee;border-radius:8px;font:inherit;color:var(--text);background:#fff}
+.contact-form textarea{min-height:130px;resize:vertical}
+.honeypot{position:absolute;left:-10000px;opacity:0}
+.btn-primary{background:#1f4ea3;color:#fff}
+.location-card h2{margin:.1rem 0 .45rem}
+.location-card iframe{width:100%;height:320px;border:0;border-radius:10px}
 @media (max-width:930px){.hero-grid,.split{grid-template-columns:1fr}.process-grid{grid-template-columns:1fr 1fr}.stat-row{grid-template-columns:1fr 1fr}}
-@media (max-width:620px){.nav-wrap{flex-direction:column;align-items:flex-start}nav a{margin-left:0;margin-right:.7rem}.process-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr}}
+@media (max-width:620px){.nav-wrap{flex-direction:column;align-items:flex-start}nav a{margin-left:0;margin-right:.7rem}.process-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr}.contact-layout{grid-template-columns:1fr}}
