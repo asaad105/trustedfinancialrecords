@@ -69,10 +69,29 @@
 (() => {
   if (document.getElementById('chat-trigger') || document.getElementById('chat-box')) return;
 
-  const calendlyScript = document.createElement('script');
-  calendlyScript.src = 'https://assets.calendly.com/assets/external/widget.js';
-  calendlyScript.async = true;
-  document.head.appendChild(calendlyScript);
+  const calendlyEmbedUrl = 'https://calendly.com/trustedfinancialofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1';
+
+  const loadCalendlyScript = () => new Promise((resolve) => {
+    if (window.Calendly?.initInlineWidget) {
+      resolve(true);
+      return;
+    }
+
+    const existing = document.querySelector('script[data-calendly-widget="true"]');
+    if (existing) {
+      existing.addEventListener('load', () => resolve(true), { once: true });
+      existing.addEventListener('error', () => resolve(false), { once: true });
+      return;
+    }
+
+    const calendlyScript = document.createElement('script');
+    calendlyScript.src = 'https://assets.calendly.com/assets/external/widget.js';
+    calendlyScript.async = true;
+    calendlyScript.dataset.calendlyWidget = 'true';
+    calendlyScript.addEventListener('load', () => resolve(true), { once: true });
+    calendlyScript.addEventListener('error', () => resolve(false), { once: true });
+    document.head.appendChild(calendlyScript);
+  });
 
   const trigger = document.createElement('button');
   trigger.id = 'chat-trigger';
@@ -120,26 +139,38 @@
     }, 300);
   };
 
-  const showCalendlyEmbed = () => {
+  const showCalendlyEmbed = async () => {
     if (history.querySelector('.calendar-wrapper')) return;
 
     const wrapper = document.createElement('div');
     wrapper.className = 'calendar-wrapper';
-    wrapper.innerHTML = `
-      <div class="calendly-inline-widget"
-           data-url="https://calendly.com/trustedfinancialofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1"
-           style="min-width:320px;height:100%;"></div>
-    `;
+
+    const bookingLink = document.createElement('a');
+    bookingLink.href = calendlyEmbedUrl;
+    bookingLink.target = '_blank';
+    bookingLink.rel = 'noopener noreferrer';
+    bookingLink.className = 'calendar-link';
+    bookingLink.textContent = 'Open appointment calendar in a new tab';
 
     history.appendChild(wrapper);
+    history.appendChild(bookingLink);
     history.scrollTop = history.scrollHeight;
 
-    if (window.Calendly?.initInlineWidget) {
+    const loaded = await loadCalendlyScript();
+
+    if (loaded && window.Calendly?.initInlineWidget) {
       window.Calendly.initInlineWidget({
-        url: 'https://calendly.com/trustedfinancialofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1',
+        url: calendlyEmbedUrl,
         parentElement: wrapper
       });
+      return;
     }
+
+    const iframe = document.createElement('iframe');
+    iframe.src = calendlyEmbedUrl;
+    iframe.title = 'Book an appointment';
+    iframe.loading = 'lazy';
+    wrapper.appendChild(iframe);
   };
 
   const selectChoice = (choice) => {
@@ -150,7 +181,7 @@
       addMessage('Yes, please.', 'user');
       setTimeout(() => {
         addMessage('Wonderful. Please use our live calendar below to view our open availability and pick a time slot that suits you best.', 'bot');
-        showCalendlyEmbed();
+        void showCalendlyEmbed();
       }, 400);
     } else {
       addMessage('No, thank you.', 'user');
