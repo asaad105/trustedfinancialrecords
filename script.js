@@ -2,6 +2,7 @@
   const form = document.getElementById('contactForm');
   if (!form) return;
   const status = document.getElementById('formStatus');
+  const contactEmail = 'info@trustedfinr.com';
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -14,7 +15,15 @@
       status.textContent = 'Please fill out all required fields.';
       return;
     }
-    status.textContent = 'Thanks! Your message has been recorded locally.';
+
+    const name = String(data.get('name')).trim();
+    const email = String(data.get('email')).trim();
+    const message = String(data.get('message')).trim();
+    const subject = encodeURIComponent(`Contact form inquiry from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+
+    status.textContent = `Opening your email app to send this message to ${contactEmail}.`;
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
     form.reset();
   });
 })();
