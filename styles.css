@@ -15,7 +15,13 @@ nav a{text-decoration:none;color:var(--primary);font-weight:600;margin-left:.9re
 .dropdown{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;margin-bottom:.8rem}
 .dropdown summary{cursor:pointer;font-weight:700;color:var(--primary)}
 .dropdown p{margin:.7rem 0 .2rem}.contact-form{display:grid;gap:.8rem;max-width:640px}.contact-form input,.contact-form textarea{width:100%;padding:.6rem;border:1px solid #c8d3e6;border-radius:7px}.honeypot{position:absolute;left:-9999px}
+.contact-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:1.2rem;align-items:start}
+.location-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1rem;box-shadow:0 6px 20px rgba(23,43,77,.08)}
+.location-card h2{margin-top:0}
+.location-card iframe{width:100%;min-height:300px;border:0;border-radius:8px}
+
 .site-footer{background:#fff;border-top:1px solid var(--border);padding:1.2rem 0;margin-top:2rem}.page h1{margin-top:0}
+@media (max-width:900px){.contact-layout{grid-template-columns:1fr}.contact-form{max-width:none}}
 @media (max-width:560px){.nav-wrap{flex-direction:column;align-items:flex-start}nav a{margin-left:0;margin-right:.7rem}}
 
 .section-head{margin-bottom:1rem}.section-subtitle{margin-top:-.25rem;color:var(--muted)}
