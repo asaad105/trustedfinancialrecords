@@ -75,7 +75,10 @@
     <button class="chat-toggle" id="chatToggle" aria-expanded="false" aria-controls="chatPanel">Chat with us</button>
     <div class="chat-panel" id="chatPanel" hidden>
       <header class="chat-header">
-        <h2>Finance Assistant</h2>
+        <div class="chat-header-identity">
+          <img class="chat-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&q=80" alt="Support specialist portrait" loading="lazy" />
+          <h2>Chat with us</h2>
+        </div>
         <button class="chat-close" id="chatClose" aria-label="Close chat">×</button>
       </header>
       <div class="chat-messages" id="chatMessages" role="log" aria-live="polite"></div>
