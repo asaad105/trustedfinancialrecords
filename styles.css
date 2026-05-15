@@ -99,3 +99,71 @@ main{overflow:hidden}
   .feature-grid,.feature-grid.three,.process-grid,.mini-service-grid{grid-template-columns:1fr}
   .chat-widget{right:.75rem;bottom:.75rem}
 }
+
+#chat-launcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 70;
+}
+
+#chat-window {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: min(350px, calc(100vw - 24px));
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 70;
+}
+
+.chat-content {
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.bot-msg {
+  background: #e9e9e9;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+#appointment-form input,
+#appointment-form button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#appointment-form button[type="submit"] {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.hidden {
+  display: none;
+}
+
+.success-msg {
+  background: #d4edda;
+  color: #155724;
+}
