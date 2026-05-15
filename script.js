@@ -79,7 +79,7 @@
         <div class="bot-msg" id="chatGreeting"></div>
         <div class="bot-msg" id="chatPrompt"></div>
         <button type="button" id="showAppointmentForm" class="chat-cta">Book an Appointment</button>
-        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" id="appointment-form" class="hidden">
+        <form action="https://formspree.io/f/mlgzyowq" method="POST" id="appointment-form" class="hidden">
           <label for="clientName">Full Name</label>
           <input id="clientName" type="text" name="name" placeholder="John Doe" required>
 
