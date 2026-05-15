@@ -72,57 +72,46 @@
   widget.setAttribute('aria-label', 'Chat support assistant');
 
   widget.innerHTML = `
-    <button class="chat-toggle" id="chatToggle" aria-expanded="false" aria-controls="chatPanel">Chat with us</button>
-    <div class="chat-panel" id="chatPanel" hidden>
-      <header class="chat-header">
-        <h2>Finance Assistant</h2>
-        <button class="chat-close" id="chatClose" aria-label="Close chat">×</button>
-      </header>
-      <div class="chat-messages" id="chatMessages" role="log" aria-live="polite"></div>
-      <form class="chat-form" id="chatForm">
-        <label class="sr-only" for="chatInput">Type your message</label>
-        <input id="chatInput" name="chatInput" type="text" placeholder="Ask about services, pricing, or timelines..." required />
-        <button type="submit" id="chatSendButton">Send</button>
-      </form>
+    <button id="chat-launcher" aria-expanded="false" aria-controls="chat-window">💬</button>
+    <div id="chat-window" hidden>
+      <div class="chat-header">Trusted Financial Records Support</div>
+      <div class="chat-content">
+        <div class="bot-msg" id="chatGreeting"></div>
+        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" id="appointment-form">
+          <label for="clientName">Full Name</label>
+          <input id="clientName" type="text" name="name" placeholder="John Doe" required>
+
+          <label for="contact">Email or Phone</label>
+          <input id="contact" type="text" name="contact" placeholder="email@example.com" required>
+
+          <label for="appointmentDateTime">Preferred Appointment Date & Time</label>
+          <input id="appointmentDateTime" type="datetime-local" name="appointment_datetime" required>
+
+          <label for="request">Briefly describe your request</label>
+          <input id="request" type="text" name="message" placeholder="QuickBooks help, Tax prep, etc.">
+
+          <button type="submit">Book Appointment</button>
+        </form>
+
+        <div id="confirmation" class="hidden bot-msg success-msg">
+          Perfect! Your appointment is all set.
+          A confirmation message has been sent to the contact information you provided.
+          We have also forwarded these details to our internal team so we can prepare for our meeting.
+          Is there anything else I can assist you with in the meantime?
+        </div>
+      </div>
     </div>
   `;
 
   document.body.appendChild(widget);
 
-  const toggle = document.getElementById('chatToggle');
-  const close = document.getElementById('chatClose');
-  const panel = document.getElementById('chatPanel');
-  const messages = document.getElementById('chatMessages');
-  const chatForm = document.getElementById('chatForm');
-  const input = document.getElementById('chatInput');
-  const sendButton = document.getElementById('chatSendButton');
+  const launcher = document.getElementById('chat-launcher');
+  const chatWindow = document.getElementById('chat-window');
+  const greeting = document.getElementById('chatGreeting');
+  const form = document.getElementById('appointment-form');
+  const confirmation = document.getElementById('confirmation');
 
-  const chatState = {
-    history: [],
-    facts: {}
-  };
-  const hasDismissedKey = 'tfr_chat_dismissed';
-
-  const appendMessage = (text, role) => {
-    const item = document.createElement('p');
-    item.className = `chat-message chat-message-${role}`;
-    item.textContent = text;
-    messages.appendChild(item);
-    messages.scrollTop = messages.scrollHeight;
-  };
-
-  const pushHistory = (role, content) => {
-    chatState.history.push({ role, content });
-    if (chatState.history.length > 14) {
-      chatState.history = chatState.history.slice(-14);
-    }
-  };
-
-  const extractFacts = (text) => {
-    const cleaned = text.replace(/\s+/g, ' ').trim();
-    const nameMatch = cleaned.match(/(?:my name is|i am|this is)\s+([a-z][a-z\-']{1,30})/i);
-    const volumeMatch = cleaned.match(/(\d{1,5})\s*(?:invoices?|bills?)\s*(?:a\s*month|per\s*month|monthly)?/i);
-    const industryMatch = cleaned.match(/(?:we are|i run|our company is)\s+(?:a|an)?\s*([a-z\s\-]{3,40})(?:company|business|firm|startup)/i);
+  greeting.textContent = "Hello! Welcome to Trusted Financial Records. I'm your digital assistant. How can I help you with your accounting or financial records today? I’d love to get you the right support. May I start by getting your full name and the best phone number or email address to reach you at?";
 
     if (nameMatch) chatState.facts.name = nameMatch[1];
     if (volumeMatch) chatState.facts.invoiceVolume = volumeMatch[1];
@@ -175,17 +164,14 @@
       throw new Error('AI endpoint not configured');
     }
 
-    const payload = {
-      history: chatState.history,
-      facts: chatState.facts,
-      message: userText,
-      system: 'You are the Trusted Financial Records website assistant. Respond concisely, accurately, and professionally.'
-    };
+  form.onsubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
 
-    const response = await fetch(endpoint, {
+    const response = await fetch(form.action, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: data,
+      headers: { Accept: 'application/json' }
     });
 
     if (!response.ok) {
@@ -196,27 +182,6 @@
     if (!data || typeof data.reply !== 'string') {
       throw new Error('Invalid AI response');
     }
-
-    return data.reply;
-  };
-
-  const setSending = (value) => {
-    sendButton.disabled = value;
-    input.disabled = value;
-    sendButton.textContent = value ? 'Thinking…' : 'Send';
-  };
-
-  const openChat = () => {
-    panel.hidden = false;
-    toggle.setAttribute('aria-expanded', 'true');
-    input.focus();
-  };
-
-  const closeChat = () => {
-    panel.hidden = true;
-    toggle.setAttribute('aria-expanded', 'false');
-    try { window.sessionStorage.setItem(hasDismissedKey, '1'); } catch (error) {}
-    toggle.focus();
   };
 
   toggle.addEventListener('click', () => {
