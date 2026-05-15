@@ -114,7 +114,7 @@
     setTimeout(() => {
       addMessage('Hi! I am the Trusted Financial Records assistant.', 'bot');
       setTimeout(() => {
-        addMessage('How can I assist you with your bookkeeping, AP support, or financial tracking today?', 'bot');
+        addMessage('How can I assist you with your bookkeeping today?', 'bot');
         currentStep = 2;
       }, 600);
     }, 300);
