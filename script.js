@@ -2,7 +2,7 @@
   const form = document.getElementById('contactForm');
   if (!form) return;
   const status = document.getElementById('formStatus');
-  const contactEmail = 'info@trustedfinr.com';
+  const calendlyUrl = 'https://calendly.com/trustedfinr/consultation';
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -24,12 +24,16 @@
       ? new Date(appointmentDateTime).toLocaleString()
       : 'Not provided';
     const message = String(data.get('message')).trim();
-    const subject = encodeURIComponent(`Contact form inquiry from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nService: ${service}\nRequested appointment: ${appointmentText}\n\nMessage:\n${message}`);
+    const calendlyPrefill = new URLSearchParams({
+      name,
+      email,
+      a1: service,
+      a2: appointmentText,
+      a3: message
+    });
 
-    status.textContent = `Opening your email app to send this message to ${contactEmail}.`;
-    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
-    form.reset();
+    status.textContent = 'Redirecting you to Calendly to choose your appointment time.';
+    window.location.href = `${calendlyUrl}?${calendlyPrefill.toString()}`;
   });
 })();
 
