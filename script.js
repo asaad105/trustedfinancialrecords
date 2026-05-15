@@ -78,7 +78,7 @@
       <div class="chat-content">
         <div class="bot-msg" id="chatGreeting"></div>
         <div class="bot-msg" id="chatPrompt"></div>
-        <button type="button" id="showAppointmentForm" class="chat-cta">Book an Appointment</button>
+        <button type="button" id="showAppointmentForm" class="chat-cta">View Availability in Calendly</button>
         <form action="https://formspree.io/f/xvzljvvq" method="POST" id="appointment-form" class="hidden">
           <label for="clientName">Full Name</label>
           <input id="clientName" type="text" name="name" placeholder="John Doe" required>
@@ -114,7 +114,7 @@
   const submitButton = document.getElementById('bookAppointmentButton');
 
   greeting.textContent = 'Hi! I’m the Trusted Financial Records assistant.';
-  prompt.textContent = 'Need help with bookkeeping or AP support? Book an appointment and our team will follow up.';
+  prompt.textContent = 'Need help with bookkeeping or AP support? Book instantly with Calendly and view live availability.';
 
   launcher.addEventListener('click', () => {
     const isOpen = !chatWindow.hidden;
@@ -123,9 +123,7 @@
   });
 
   showAppointmentFormButton.addEventListener('click', () => {
-    form.classList.remove('hidden');
-    showAppointmentFormButton.classList.add('hidden');
-    confirmation.classList.add('hidden');
+    window.open('https://calendly.com/trustedfinr/consultation', '_blank', 'noopener,noreferrer');
   });
 
   form.onsubmit = async (event) => {
