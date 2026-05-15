@@ -86,21 +86,17 @@
           <label for="contact">Email or Phone</label>
           <input id="contact" type="text" name="contact" placeholder="email@example.com" required>
 
-          <label for="appointmentDateTime">Preferred Appointment Date & Time</label>
-          <input id="appointmentDateTime" type="datetime-local" name="appointment_datetime" required>
+          <label for="appointmentDate">Preferred Appointment Date</label>
+          <input id="appointmentDate" type="date" name="appointment_date" required>
 
           <label for="request">Briefly describe your request</label>
           <input id="request" type="text" name="message" placeholder="QuickBooks help, Tax prep, etc.">
 
           <button type="submit" id="bookAppointmentButton">Book Appointment</button>
-          <p id="appointmentStatus" class="status-msg" role="status" aria-live="polite"></p>
         </form>
 
         <div id="confirmation" class="hidden bot-msg success-msg">
-          Perfect! Your appointment is all set.
-          A confirmation message has been sent to the contact information you provided.
-          We have also forwarded these details to our internal team so we can prepare for our meeting.
-          Is there anything else I can assist you with in the meantime?
+          Thank you! Your appointment is set. A confirmation has been sent to you and our team.
         </div>
       </div>
     </div>
@@ -110,16 +106,8 @@
 
   const launcher = document.getElementById('chat-launcher');
   const chatWindow = document.getElementById('chat-window');
-  const greeting = document.getElementById('chatGreeting');
-  const prompt = document.getElementById('chatPrompt');
-  const showAppointmentFormButton = document.getElementById('showAppointmentForm');
   const form = document.getElementById('appointment-form');
   const confirmation = document.getElementById('confirmation');
-  const appointmentStatus = document.getElementById('appointmentStatus');
-  const submitButton = document.getElementById('bookAppointmentButton');
-
-  greeting.textContent = "Hello! Welcome to Trusted Financial Records — I’m your virtual assistant.";
-  prompt.textContent = "If you’d like, I can answer questions first. If you’re ready, tap below to open the appointment form.";
 
   launcher.addEventListener('click', () => {
     const isOpen = !chatWindow.hidden;
@@ -127,43 +115,20 @@
     launcher.setAttribute('aria-expanded', String(!isOpen));
   });
 
-  showAppointmentFormButton.addEventListener('click', () => {
-    showAppointmentFormButton.classList.add('hidden');
-    form.classList.remove('hidden');
-  });
-
   form.onsubmit = async (event) => {
     event.preventDefault();
-    appointmentStatus.textContent = '';
-
-    if (form.action.includes('YOUR_ID_HERE')) {
-      appointmentStatus.textContent = 'Booking is not configured yet. Please replace YOUR_ID_HERE in the Formspree URL first.';
-      return;
-    }
-
     const data = new FormData(form);
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { Accept: 'application/json' }
+    });
 
-    try {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Booking...';
-
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' }
-      });
-
-      if (response.ok) {
-        form.classList.add('hidden');
-        confirmation.classList.remove('hidden');
-      } else {
-        appointmentStatus.textContent = 'We could not submit your request right now. Please try again or contact info@trustedfinr.com.';
-      }
-    } catch (error) {
-      appointmentStatus.textContent = 'Network error while booking. Please try again or email info@trustedfinr.com.';
-    } finally {
-      submitButton.disabled = false;
-      submitButton.textContent = 'Book Appointment';
+    if (response.ok) {
+      form.classList.add('hidden');
+      confirmation.classList.remove('hidden');
+    } else {
+      alert('Oops! There was a problem submitting your request.');
     }
   };
 })();
