@@ -77,7 +77,9 @@
       <div class="chat-header">Trusted Financial Records Support</div>
       <div class="chat-content">
         <div class="bot-msg" id="chatGreeting"></div>
-        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" id="appointment-form">
+        <div class="bot-msg" id="chatPrompt"></div>
+        <button type="button" id="showAppointmentForm" class="chat-cta">Book an Appointment</button>
+        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" id="appointment-form" class="hidden">
           <label for="clientName">Full Name</label>
           <input id="clientName" type="text" name="name" placeholder="John Doe" required>
 
@@ -109,17 +111,25 @@
   const launcher = document.getElementById('chat-launcher');
   const chatWindow = document.getElementById('chat-window');
   const greeting = document.getElementById('chatGreeting');
+  const prompt = document.getElementById('chatPrompt');
+  const showAppointmentFormButton = document.getElementById('showAppointmentForm');
   const form = document.getElementById('appointment-form');
   const confirmation = document.getElementById('confirmation');
   const appointmentStatus = document.getElementById('appointmentStatus');
   const submitButton = document.getElementById('bookAppointmentButton');
 
-  greeting.textContent = "Hello! Welcome to Trusted Financial Records. I'm your digital assistant. How can I help you with your accounting or financial records today? I’d love to get you the right support. May I start by getting your full name and the best phone number or email address to reach you at?";
+  greeting.textContent = "Hello! Welcome to Trusted Financial Records — I’m your virtual assistant.";
+  prompt.textContent = "If you’d like, I can answer questions first. If you’re ready, tap below to open the appointment form.";
 
   launcher.addEventListener('click', () => {
     const isOpen = !chatWindow.hidden;
     chatWindow.hidden = isOpen;
     launcher.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  showAppointmentFormButton.addEventListener('click', () => {
+    showAppointmentFormButton.classList.add('hidden');
+    form.classList.remove('hidden');
   });
 
   form.onsubmit = async (event) => {
