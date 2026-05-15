@@ -76,10 +76,10 @@
     <div id="chat-window" hidden>
       <div class="chat-header">Trusted Financial Records Support</div>
       <div class="chat-content">
-        <div class="bot-msg">
-          Hello! How can I help you with your accounting or financial records today?
-        </div>
-        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" id="appointment-form">
+        <div class="bot-msg" id="chatGreeting"></div>
+        <div class="bot-msg" id="chatPrompt"></div>
+        <button type="button" id="showAppointmentForm" class="chat-cta">Book an Appointment</button>
+        <form action="https://formspree.io/f/mlgzyowq" method="POST" id="appointment-form" class="hidden">
           <label for="clientName">Full Name</label>
           <input id="clientName" type="text" name="name" placeholder="John Doe" required>
 
