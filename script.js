@@ -158,9 +158,22 @@
     return 'Thanks for your message. Our primary service is bookkeeping, and I can also help with AP support, onboarding timeline, and pricing basics. Share your details and I will use them in follow-up replies.';
   };
 
+  const resolveAiEndpoint = () => {
+    const explicit = typeof window.TRUSTED_FIN_AI_ENDPOINT === 'string' ? window.TRUSTED_FIN_AI_ENDPOINT.trim() : '';
+    if (explicit) return explicit;
+
+    const metaTag = document.querySelector('meta[name="trusted-fin-ai-endpoint"]');
+    const metaEndpoint = metaTag ? String(metaTag.getAttribute('content') || '').trim() : '';
+    if (metaEndpoint) return metaEndpoint;
+
+    return null;
+  };
+
   const aiReply = async (userText) => {
-    const endpoint = window.TRUSTED_FIN_AI_ENDPOINT;
-    if (!endpoint) return null;
+    const endpoint = resolveAiEndpoint();
+    if (!endpoint) {
+      throw new Error('AI endpoint not configured');
+    }
 
     const payload = {
       history: chatState.history,
@@ -176,7 +189,7 @@
     });
 
     if (!response.ok) {
-      throw new Error('AI service unavailable');
+      throw new Error(`AI service returned ${response.status}`);
     }
 
     const data = await response.json();
@@ -212,6 +225,8 @@
   });
   close.addEventListener('click', closeChat);
 
+  let hasNotifiedFallback = false;
+
   chatForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const value = input.value.trim();
@@ -230,6 +245,17 @@
       pushHistory('assistant', response);
     } catch (error) {
       const response = localReply(value);
+      if (!hasNotifiedFallback) {
+        const issue = error instanceof Error ? error.message : 'Unknown error';
+        const notice = issue === 'AI endpoint not configured'
+          ? 'Heads up: live AI is not configured on this site yet, so you are seeing backup replies.'
+          : issue.includes('405')
+            ? 'Heads up: live AI endpoint rejected chat requests (HTTP 405), so you are seeing backup replies.'
+            : 'Heads up: live AI is currently unavailable, so you are seeing backup replies. Please try again later or contact us directly.';
+        appendMessage(notice, 'bot');
+        pushHistory('assistant', notice);
+        hasNotifiedFallback = true;
+      }
       appendMessage(response, 'bot');
       pushHistory('assistant', response);
     } finally {
