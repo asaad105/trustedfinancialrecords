@@ -67,97 +67,161 @@
 })();
 
 (() => {
-  const existingWidget = document.getElementById('chatWidget');
-  if (existingWidget) return;
+  if (document.getElementById('chat-trigger') || document.getElementById('chat-box')) return;
 
-  const widget = document.createElement('section');
-  widget.className = 'chat-widget';
-  widget.id = 'chatWidget';
-  widget.setAttribute('aria-label', 'Chat support assistant');
+  const calendlyScript = document.createElement('script');
+  calendlyScript.src = 'https://assets.calendly.com/assets/external/widget.js';
+  calendlyScript.async = true;
+  document.head.appendChild(calendlyScript);
 
-  widget.innerHTML = `
-    <button id="chat-launcher" aria-expanded="false" aria-controls="chat-window">💬</button>
-    <div id="chat-window" hidden>
-      <div class="chat-header">Trusted Financial Records Support</div>
-      <div class="chat-content">
-        <div class="bot-msg" id="chatGreeting"></div>
-        <div class="bot-msg" id="chatPrompt"></div>
-        <button type="button" id="showAppointmentForm" class="chat-cta">View Availability in Calendly</button>
-        <form action="https://formspree.io/f/xvzljvvq" method="POST" id="appointment-form" class="hidden">
-          <label for="clientName">Full Name</label>
-          <input id="clientName" type="text" name="name" placeholder="John Doe" required>
+  const trigger = document.createElement('button');
+  trigger.id = 'chat-trigger';
+  trigger.type = 'button';
+  trigger.setAttribute('aria-label', 'Open chat assistant');
+  trigger.textContent = '💬';
 
-          <label for="contact">Email or Phone</label>
-          <input id="contact" type="text" name="contact" placeholder="email@example.com" required>
-
-          <label for="appointmentDate">Preferred Appointment Date</label>
-          <input id="appointmentDate" type="date" name="appointment_date" required>
-
-          <label for="request">Briefly describe your request</label>
-          <input id="request" type="text" name="message" placeholder="QuickBooks help, Tax prep, etc.">
-
-          <button type="submit" id="bookAppointmentButton">Book Appointment</button>
-        </form>
-
-        <div id="confirmation" class="hidden bot-msg success-msg">
-          Thank you! Your appointment is set. A confirmation has been sent to you and our team.
-        </div>
-      </div>
+  const box = document.createElement('div');
+  box.id = 'chat-box';
+  box.innerHTML = `
+    <div class="header">
+      <h3>Trusted Financial Records Support</h3>
+      <small>Online Assistant</small>
+    </div>
+    <div id="chat-history"></div>
+    <div class="input-group">
+      <input type="text" id="user-input" placeholder="Type a message..." aria-label="Type a message" />
+      <button id="send-btn" type="button">Send</button>
     </div>
   `;
 
-  document.body.appendChild(widget);
+  document.body.append(trigger, box);
 
-  const launcher = document.getElementById('chat-launcher');
-  const chatWindow = document.getElementById('chat-window');
-  const greeting = document.getElementById('chatGreeting');
-  const prompt = document.getElementById('chatPrompt');
-  const showAppointmentFormButton = document.getElementById('showAppointmentForm');
-  const form = document.getElementById('appointment-form');
-  const confirmation = document.getElementById('confirmation');
-  const submitButton = document.getElementById('bookAppointmentButton');
+  let currentStep = 1;
 
-  greeting.textContent = 'Hi! I’m the Trusted Financial Records assistant.';
-  prompt.textContent = 'Need help with bookkeeping or AP support? Book instantly with Calendly and view live availability.';
+  const history = box.querySelector('#chat-history');
+  const input = box.querySelector('#user-input');
+  const sendButton = box.querySelector('#send-btn');
 
-  launcher.addEventListener('click', () => {
-    const isOpen = !chatWindow.hidden;
-    chatWindow.hidden = isOpen;
-    launcher.setAttribute('aria-expanded', String(!isOpen));
-  });
+  const addMessage = (text, sender) => {
+    const div = document.createElement('div');
+    div.className = `msg ${sender}`;
+    div.innerText = text;
+    history.appendChild(div);
+    history.scrollTop = history.scrollHeight;
+  };
 
-  showAppointmentFormButton.addEventListener('click', () => {
-    window.open('https://calendly.com/trustedfinancialofficial/30min', '_blank', 'noopener,noreferrer');
-  });
+  const startConversation = () => {
+    setTimeout(() => {
+      addMessage('Hi! I am the Trusted Financial Records assistant.', 'bot');
+      setTimeout(() => {
+        addMessage('How can I assist you with your bookkeeping, AP support, or financial tracking today?', 'bot');
+        currentStep = 2;
+      }, 600);
+    }, 300);
+  };
 
-  form.onsubmit = async (event) => {
-    event.preventDefault();
-    submitButton.disabled = true;
-    submitButton.textContent = 'Submitting...';
-    const data = new FormData(form);
-    let response;
+  const showCalendlyEmbed = () => {
+    if (history.querySelector('.calendar-wrapper')) return;
 
-    try {
-      response = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' }
+    const wrapper = document.createElement('div');
+    wrapper.className = 'calendar-wrapper';
+    wrapper.innerHTML = `
+      <div class="calendly-inline-widget"
+           data-url="https://calendly.com/trustedfinancialofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1"
+           style="min-width:320px;height:100%;"></div>
+    `;
+
+    history.appendChild(wrapper);
+    history.scrollTop = history.scrollHeight;
+
+    if (window.Calendly?.initInlineWidget) {
+      window.Calendly.initInlineWidget({
+        url: 'https://calendly.com/trustedfinancialofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1',
+        parentElement: wrapper.querySelector('.calendly-inline-widget')
       });
-
-      if (response.ok) {
-        form.classList.add('hidden');
-        confirmation.classList.remove('hidden');
-        form.reset();
-        showAppointmentFormButton.classList.remove('hidden');
-        showAppointmentFormButton.textContent = 'Book Another Appointment';
-      } else {
-        alert('Oops! There was a problem submitting your request.');
-      }
-    } catch (error) {
-      alert('Unable to submit right now. Please try again in a moment.');
-    } finally {
-      submitButton.disabled = false;
-      submitButton.textContent = 'Book Appointment';
     }
   };
+
+  const selectChoice = (choice) => {
+    const containers = history.querySelectorAll('.btn-container');
+    if (containers.length > 0) containers[containers.length - 1].remove();
+
+    if (choice === 'yes') {
+      addMessage('Yes, please.', 'user');
+      setTimeout(() => {
+        addMessage('Wonderful. Please use our live calendar below to view our open availability and pick a time slot that suits you best.', 'bot');
+        showCalendlyEmbed();
+      }, 400);
+    } else {
+      addMessage('No, thank you.', 'user');
+      setTimeout(() => {
+        addMessage('No problem at all! Wishing you the best of luck with your endeavors. Please let me know if there is anything else I can help you find.', 'bot');
+        currentStep = 4;
+      }, 400);
+    }
+  };
+
+  const showBookingChoices = () => {
+    const container = document.createElement('div');
+    container.className = 'btn-container';
+
+    const yesButton = document.createElement('button');
+    yesButton.className = 'choice-btn';
+    yesButton.type = 'button';
+    yesButton.textContent = 'Yes, please';
+    yesButton.addEventListener('click', () => selectChoice('yes'));
+
+    const noButton = document.createElement('button');
+    noButton.className = 'choice-btn';
+    noButton.type = 'button';
+    noButton.textContent = 'No, thank you';
+    noButton.addEventListener('click', () => selectChoice('no'));
+
+    container.append(yesButton, noButton);
+    history.appendChild(container);
+    history.scrollTop = history.scrollHeight;
+  };
+
+  const handleConversationFlow = (userText) => {
+    if (currentStep === 2) {
+      addMessage('Thank you for sharing that with me. Would you like to schedule a brief appointment with us to look into this together?', 'bot');
+      showBookingChoices();
+      currentStep = 3;
+    } else if (currentStep === 3) {
+      const lower = userText.toLowerCase();
+      if (lower.includes('yes') || lower.includes('sure') || lower.includes('book')) {
+        selectChoice('yes');
+      } else {
+        selectChoice('no');
+      }
+    } else {
+      addMessage('Is there anything else I can assist you with today?', 'bot');
+      showBookingChoices();
+      currentStep = 3;
+    }
+  };
+
+  const processTextSubmit = () => {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    input.value = '';
+
+    setTimeout(() => handleConversationFlow(text), 600);
+  };
+
+  const toggleChat = () => {
+    const isOpening = box.style.display === 'none' || box.style.display === '';
+    box.style.display = isOpening ? 'flex' : 'none';
+
+    if (isOpening && history.children.length === 0) startConversation();
+  };
+
+  trigger.addEventListener('click', toggleChat);
+  sendButton.addEventListener('click', processTextSubmit);
+  input.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') processTextSubmit();
+  });
 })();
+
