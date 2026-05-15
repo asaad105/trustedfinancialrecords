@@ -26,6 +26,17 @@
     <form id="contactForm" class="contact-form">
       <label>Name *<input name="name" required /></label>
       <label>Email address *<input name="email" type="email" required /></label>
+      <label>Preferred service
+        <select name="service">
+          <option value="General consultation">General consultation</option>
+          <option value="Accounts payable support">Accounts payable support</option>
+          <option value="Bookkeeping & reconciliation">Bookkeeping & reconciliation</option>
+          <option value="Monthly reporting">Monthly reporting</option>
+        </select>
+      </label>
+      <label>Preferred appointment date and time
+        <input name="appointmentDateTime" type="datetime-local" />
+      </label>
       <label>Message *<textarea name="message" required></textarea></label>
       <label class="honeypot">Leave this field empty<input name="website" tabindex="-1" autocomplete="off" /></label>
       <button class="btn" type="submit">Submit form</button>
@@ -33,6 +44,9 @@
     </form>
 
     <section class="location-card" aria-label="Our location">
+      <h2>Book an appointment</h2>
+      <p>Prefer a direct booking flow? Use this quick link to request a time with our team.</p>
+      <p><a class="btn btn-primary" href="mailto:info@trustedfinr.com?subject=Appointment%20Request">Request an appointment by email</a></p>
       <h2>Location</h2>
       <p>Trusted Financial Records Company<br/>Calgary, Alberta, Canada</p>
       <iframe
