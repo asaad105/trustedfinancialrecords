@@ -33,7 +33,6 @@
   });
 })();
 
-
 (() => {
   const wrap = document.getElementById('testimonialCards');
   if (!wrap) return;
@@ -61,4 +60,98 @@
 
   renderCards();
   setInterval(renderCards, 8000);
+})();
+
+(() => {
+  const existingWidget = document.getElementById('chatWidget');
+  if (existingWidget) return;
+
+  const widget = document.createElement('section');
+  widget.className = 'chat-widget';
+  widget.id = 'chatWidget';
+  widget.setAttribute('aria-label', 'Chat support assistant');
+
+  widget.innerHTML = `
+    <button class="chat-toggle" id="chatToggle" aria-expanded="false" aria-controls="chatPanel">Chat with us</button>
+    <div class="chat-panel" id="chatPanel" hidden>
+      <header class="chat-header">
+        <h2>Finance Assistant</h2>
+        <button class="chat-close" id="chatClose" aria-label="Close chat">×</button>
+      </header>
+      <div class="chat-messages" id="chatMessages" role="log" aria-live="polite"></div>
+      <form class="chat-form" id="chatForm">
+        <label class="sr-only" for="chatInput">Type your message</label>
+        <input id="chatInput" name="chatInput" type="text" placeholder="Ask about services, pricing, or timelines..." required />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(widget);
+
+  const toggle = document.getElementById('chatToggle');
+  const close = document.getElementById('chatClose');
+  const panel = document.getElementById('chatPanel');
+  const messages = document.getElementById('chatMessages');
+  const chatForm = document.getElementById('chatForm');
+  const input = document.getElementById('chatInput');
+
+  const appendMessage = (text, role) => {
+    const item = document.createElement('p');
+    item.className = `chat-message chat-message-${role}`;
+    item.textContent = text;
+    messages.appendChild(item);
+    messages.scrollTop = messages.scrollHeight;
+  };
+
+  const botReply = (rawText) => {
+    const text = rawText.toLowerCase();
+    if (text.includes('price') || text.includes('cost') || text.includes('pricing')) {
+      return 'Pricing depends on transaction volume and reporting needs. Share your monthly invoice count on the Contact page and we can send a tailored quote.';
+    }
+    if (text.includes('bookkeeping') || text.includes('reconciliation')) {
+      return 'We handle expense categorization, ledger cleanup, and bank/credit card reconciliations with a monthly close cadence.';
+    }
+    if (text.includes('ap') || text.includes('accounts payable') || text.includes('invoice')) {
+      return 'Our AP support includes invoice intake, approval routing, and payment batch prep with clear approval checkpoints.';
+    }
+    if (text.includes('time') || text.includes('turnaround') || text.includes('how long')) {
+      return 'Most teams are onboarded in 1-2 weeks, and invoice processing targets a 2-business-day turnaround after receipt.';
+    }
+    if (text.includes('contact') || text.includes('email') || text.includes('phone')) {
+      return 'You can reach us through the Contact page form. We typically respond within one business day.';
+    }
+    return 'Thanks for your message. I can help with AP support, bookkeeping, onboarding timeline, and pricing basics. If you share details, I can guide you to the next step.';
+  };
+
+  const openChat = () => {
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    input.focus();
+  };
+
+  const closeChat = () => {
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
+  };
+
+  toggle.addEventListener('click', () => {
+    if (panel.hidden) openChat();
+    else closeChat();
+  });
+  close.addEventListener('click', closeChat);
+
+  chatForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = input.value.trim();
+    if (!value) return;
+
+    appendMessage(value, 'user');
+    const response = botReply(value);
+    window.setTimeout(() => appendMessage(response, 'bot'), 250);
+    input.value = '';
+  });
+
+  appendMessage('Hi! I\'m the Trusted Financial Records assistant. Ask me about AP, bookkeeping, timelines, or pricing.', 'bot');
 })();
