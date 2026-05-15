@@ -23,44 +23,68 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <p class="eyebrow">Built for startup founders and finance leads</p>
-          <h1>Books you can trust. Reports investors can read in minutes.</h1>
-          <p>We help growth-stage teams close faster, monitor runway, and stay tax-ready with practical bookkeeping operations.</p>
+    <section class="hero-saas">
+      <div class="container hero-shell">
+        <div class="hero-copy">
+          <p class="eyebrow">Modern bookkeeping for scaling businesses</p>
+          <h1>Financial clarity that feels as simple as your favorite SaaS dashboard.</h1>
+          <p class="lede">Built with the same clean, conversion-first design language used by top-rated accounting brands: concise messaging, trust badges, and a high-contrast CTA.</p>
           <div class="cta-row">
-            <a class="btn" href="contact.html">Book a discovery call</a>
+            <a class="btn" href="contact.html">Start free consultation</a>
+            <a class="btn btn-ghost" href="#services">See services</a>
+          </div>
+          <div class="trust-row" aria-label="Trust indicators">
+            <span>99.2% monthly close on time</span>
+            <span>250+ founders supported</span>
+            <span>U.S. GAAP aligned workflows</span>
           </div>
         </div>
-        <aside class="hero-panel" aria-label="Quick results">
-          <h2>What clients usually fix first</h2>
+        <aside class="metric-card" aria-label="Performance metrics">
+          <h2>Finance Health Snapshot</h2>
           <ul>
-            <li>Month-end close delays</li>
-            <li>Inconsistent categorization and reconciliations</li>
-            <li>No standard KPI package for leadership updates</li>
+            <li><strong>5 days</strong><span>Average month-end close</span></li>
+            <li><strong>100%</strong><span>Reconciliation coverage</span></li>
+            <li><strong>24 hrs</strong><span>Leadership response time</span></li>
           </ul>
+          <a href="contact.html">Book a roadmap session →</a>
         </aside>
       </div>
     </section>
 
-    <section class="container section">
+    <section class="section section-soft">
+      <div class="container value-grid">
+        <article>
+          <h3>Dedicated team</h3>
+          <p>Bookkeeper + reviewer + reporting specialist assigned to your account for continuity.</p>
+        </article>
+        <article>
+          <h3>Clean process</h3>
+          <p>Standardized close checklist and documented controls reduce surprises and rework.</p>
+        </article>
+        <article>
+          <h3>Founder visibility</h3>
+          <p>Runway, burn, margin, and cash projections delivered in a decision-ready format.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="services" class="container section">
       <h2>Core Services</h2>
       <div class="cards">
         <article class="card">
           <img src="assets/bookkeeping.svg" alt="Bookkeeping service" />
           <h3>Founder-Grade Bookkeeping</h3>
-          <p>Weekly transaction coding, payables/receivables support, and reconciliations aligned to startup operations.</p>
+          <p>Weekly coding, AP/AR support, and reconciliations tuned for startup operations.</p>
         </article>
         <article class="card">
           <img src="assets/reporting.svg" alt="Financial reporting service" />
           <h3>Board-Ready Reporting</h3>
-          <p>Monthly reporting packs with burn, runway, gross margin, and trend commentary for leadership meetings.</p>
+          <p>Monthly KPI packs with trend commentary for investor and leadership updates.</p>
         </article>
         <article class="card">
           <img src="assets/tax.svg" alt="Tax preparation service" />
           <h3>Tax-Ready Financial Records</h3>
-          <p>Year-round documentation and clean ledgers to make tax preparation predictable instead of stressful.</p>
+          <p>Year-round ledger hygiene and audit trails that make tax season predictable.</p>
         </article>
       </div>
     </section>
@@ -68,33 +92,15 @@
     <section class="container section process-section">
       <h2>How onboarding works</h2>
       <ol>
-        <li><strong>Discovery:</strong> We review current workflow, chart of accounts, and reporting needs.</li>
-        <li><strong>Cleanup & setup:</strong> We standardize categories, historical reconciliations, and timelines.</li>
-        <li><strong>Monthly rhythm:</strong> You receive a repeatable close process and leadership reporting cadence.</li>
+        <li><strong>Discovery:</strong> We map your tools, chart of accounts, and reporting goals.</li>
+        <li><strong>Cleanup:</strong> We normalize categories, reconcile history, and fix control gaps.</li>
+        <li><strong>Monthly cadence:</strong> You get a repeatable close rhythm with KPI reporting.</li>
       </ol>
     </section>
 
-    <section class="container section faq-section">
-      <h2>Information you should add next</h2>
-      <div class="faq-list">
-        <details>
-          <summary>Pricing or package ranges</summary>
-          <p>Add starting ranges (even if approximate) to improve lead quality and reduce low-intent inquiries.</p>
-        </details>
-        <details>
-          <summary>Tech stack compatibility</summary>
-          <p>List supported tools (for example accounting, payroll, and expense apps) to remove buyer uncertainty.</p>
-        </details>
-        <details>
-          <summary>Compliance and legal pages</summary>
-          <p>Add Privacy Policy + Terms of Service links in the footer to improve trust and marketing readiness.</p>
-        </details>
-      </div>
-    </section>
-
-    <section class="container section">
-      <h2>Let’s design your finance operations roadmap</h2>
-      <p>Share your current reporting blockers and we’ll send a practical next-step plan.</p>
+    <section class="container section cta-section">
+      <h2>Get a bookkeeping plan in 30 minutes</h2>
+      <p>Tell us your current blockers and receive a practical action roadmap for the next quarter.</p>
       <form id="contactForm" class="contact-form">
         <label>Name *<input name="name" required /></label>
         <label>Email address *<input name="email" type="email" required /></label>
