@@ -90,7 +90,8 @@
           <label for="request">Briefly describe your request</label>
           <input id="request" type="text" name="message" placeholder="QuickBooks help, Tax prep, etc.">
 
-          <button type="submit">Book Appointment</button>
+          <button type="submit" id="bookAppointmentButton">Book Appointment</button>
+          <p id="appointmentStatus" class="status-msg" role="status" aria-live="polite"></p>
         </form>
 
         <div id="confirmation" class="hidden bot-msg success-msg">
@@ -110,137 +111,49 @@
   const greeting = document.getElementById('chatGreeting');
   const form = document.getElementById('appointment-form');
   const confirmation = document.getElementById('confirmation');
+  const appointmentStatus = document.getElementById('appointmentStatus');
+  const submitButton = document.getElementById('bookAppointmentButton');
 
   greeting.textContent = "Hello! Welcome to Trusted Financial Records. I'm your digital assistant. How can I help you with your accounting or financial records today? I’d love to get you the right support. May I start by getting your full name and the best phone number or email address to reach you at?";
 
-    if (nameMatch) chatState.facts.name = nameMatch[1];
-    if (volumeMatch) chatState.facts.invoiceVolume = volumeMatch[1];
-    if (industryMatch) chatState.facts.industry = industryMatch[1].trim();
-  };
-
-  const localReply = (rawText) => {
-    const text = rawText.toLowerCase();
-    const namePart = chatState.facts.name ? ` ${chatState.facts.name},` : '';
-    if (text.includes('what do you know') || text.includes('remember')) {
-      const known = [];
-      if (chatState.facts.name) known.push(`your name is ${chatState.facts.name}`);
-      if (chatState.facts.invoiceVolume) known.push(`you mentioned about ${chatState.facts.invoiceVolume} invoices per month`);
-      if (chatState.facts.industry) known.push(`your business is in ${chatState.facts.industry}`);
-      return known.length ? `So far I remember that ${known.join(', ')}.` : 'I will remember details you share, like name, invoice volume, and business type.';
-    }
-    if (text.includes('price') || text.includes('cost') || text.includes('pricing')) {
-      const volumeNote = chatState.facts.invoiceVolume ? ` Since you mentioned around ${chatState.facts.invoiceVolume} monthly invoices, we can quote based on that workload.` : '';
-      return `Pricing depends on transaction volume and reporting needs.${volumeNote} Share details on the Contact page and we can send a tailored quote.`;
-    }
-    if (text.includes('bookkeeping') || text.includes('reconciliation')) {
-      return `We handle expense categorization, ledger cleanup, and bank/credit card reconciliations with a monthly close cadence${namePart ? namePart : '.'}`;
-    }
-    if (text.includes('ap') || text.includes('accounts payable') || text.includes('invoice')) {
-      return 'AP is a secondary service. We can support invoice intake, approval routing, and payment batch prep after your core bookkeeping process is in place.';
-    }
-    if (text.includes('time') || text.includes('turnaround') || text.includes('how long')) {
-      return 'Most teams are onboarded in 1-2 weeks, and invoice processing targets a 2-business-day turnaround after receipt.';
-    }
-    if (text.includes('contact') || text.includes('email') || text.includes('phone')) {
-      return 'You can reach us through the Contact page form. We typically respond within one business day.';
-    }
-    return 'Thanks for your message. Our primary service is bookkeeping, and I can also help with AP support, onboarding timeline, and pricing basics. Share your details and I will use them in follow-up replies.';
-  };
-
-  const resolveAiEndpoint = () => {
-    const explicit = typeof window.TRUSTED_FIN_AI_ENDPOINT === 'string' ? window.TRUSTED_FIN_AI_ENDPOINT.trim() : '';
-    if (explicit) return explicit;
-
-    const metaTag = document.querySelector('meta[name="trusted-fin-ai-endpoint"]');
-    const metaEndpoint = metaTag ? String(metaTag.getAttribute('content') || '').trim() : '';
-    if (metaEndpoint) return metaEndpoint;
-
-    return null;
-  };
-
-  const aiReply = async (userText) => {
-    const endpoint = resolveAiEndpoint();
-    if (!endpoint) {
-      throw new Error('AI endpoint not configured');
-    }
+  launcher.addEventListener('click', () => {
+    const isOpen = !chatWindow.hidden;
+    chatWindow.hidden = isOpen;
+    launcher.setAttribute('aria-expanded', String(!isOpen));
+  });
 
   form.onsubmit = async (event) => {
     event.preventDefault();
+    appointmentStatus.textContent = '';
+
+    if (form.action.includes('YOUR_ID_HERE')) {
+      appointmentStatus.textContent = 'Booking is not configured yet. Please replace YOUR_ID_HERE in the Formspree URL first.';
+      return;
+    }
+
     const data = new FormData(form);
 
-    const response = await fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { Accept: 'application/json' }
-    });
+    try {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Booking...';
 
-    if (!response.ok) {
-      throw new Error(`AI service returned ${response.status}`);
-    }
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' }
+      });
 
-    const data = await response.json();
-    if (!data || typeof data.reply !== 'string') {
-      throw new Error('Invalid AI response');
+      if (response.ok) {
+        form.classList.add('hidden');
+        confirmation.classList.remove('hidden');
+      } else {
+        appointmentStatus.textContent = 'We could not submit your request right now. Please try again or contact info@trustedfinr.com.';
+      }
+    } catch (error) {
+      appointmentStatus.textContent = 'Network error while booking. Please try again or email info@trustedfinr.com.';
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Book Appointment';
     }
   };
-
-  toggle.addEventListener('click', () => {
-    if (panel.hidden) openChat();
-    else closeChat();
-  });
-  close.addEventListener('click', closeChat);
-
-  let hasNotifiedFallback = false;
-
-  chatForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const value = input.value.trim();
-    if (!value) return;
-
-    appendMessage(value, 'user');
-    pushHistory('user', value);
-    extractFacts(value);
-    input.value = '';
-    setSending(true);
-
-    try {
-      const aiText = await aiReply(value);
-      const response = aiText || localReply(value);
-      appendMessage(response, 'bot');
-      pushHistory('assistant', response);
-    } catch (error) {
-      const response = localReply(value);
-      if (!hasNotifiedFallback) {
-        const issue = error instanceof Error ? error.message : 'Unknown error';
-        const notice = issue === 'AI endpoint not configured'
-          ? 'Heads up: live AI is not configured on this site yet, so you are seeing backup replies.'
-          : issue.includes('405')
-            ? 'Heads up: live AI endpoint rejected chat requests (HTTP 405), so you are seeing backup replies.'
-            : 'Heads up: live AI is currently unavailable, so you are seeing backup replies. Please try again later or contact us directly.';
-        appendMessage(notice, 'bot');
-        pushHistory('assistant', notice);
-        hasNotifiedFallback = true;
-      }
-      appendMessage(response, 'bot');
-      pushHistory('assistant', response);
-    } finally {
-      setSending(false);
-      input.focus();
-    }
-  });
-
-
-  const shouldAutoOpen = (() => {
-    try {
-      return !window.sessionStorage.getItem(hasDismissedKey);
-    } catch (error) {
-      return true;
-    }
-  })();
-
-  if (shouldAutoOpen) {
-    setTimeout(openChat, 600);
-  }
-
-  appendMessage("Hi! I'm the Trusted Financial Records assistant. I can remember what you share and answer follow-up questions.", 'bot');
 })();
