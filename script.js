@@ -114,7 +114,7 @@
     setTimeout(() => {
       addMessage('Hi! I am the Trusted Financial Records assistant.', 'bot');
       setTimeout(() => {
-        addMessage('How can I assist you with your bookkeeping today?', 'bot');
+        addMessage('How can I assist you with your bookkeeping, AP support, or financial tracking today?', 'bot');
         currentStep = 2;
       }, 600);
     }, 300);
@@ -137,7 +137,7 @@
     if (window.Calendly?.initInlineWidget) {
       window.Calendly.initInlineWidget({
         url: 'https://calendly.com/trustedfinancialofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1',
-        parentElement: wrapper.querySelector('.calendly-inline-widget')
+        parentElement: wrapper
       });
     }
   };
