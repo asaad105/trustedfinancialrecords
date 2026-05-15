@@ -27,3 +27,33 @@
     form.reset();
   });
 })();
+
+
+(() => {
+  const wrap = document.getElementById('testimonialCards');
+  if (!wrap) return;
+
+  const testimonials = [
+    { quote: '“Their team helped us finally get organized and stay ahead of reporting deadlines every month.”', author: '— Retail Business Owner' },
+    { quote: '“We now understand our numbers clearly and can plan growth without guessing.”', author: '— Marketing Agency Founder' },
+    { quote: '“Responsive, detail-oriented, and proactive. Their support has been a major relief for our team.”', author: '— Local Services Company' },
+    { quote: '“The monthly reporting is clean, timely, and easy to share with our leadership team.”', author: '— Operations Director, Healthcare' },
+    { quote: '“They fixed years of bookkeeping issues and built a process we can actually rely on.”', author: '— E-commerce Business Owner' },
+    { quote: '“Tax season is finally manageable. We stay compliant without the stress we used to have.”', author: '— Construction Firm Partner' }
+  ];
+
+  const shuffle = (list) => [...list].sort(() => Math.random() - 0.5);
+
+  const renderCards = () => {
+    const selected = shuffle(testimonials).slice(0, 4);
+    wrap.innerHTML = selected.map((item) => `
+      <article class="card testimonial-card">
+        <p>${item.quote}</p>
+        <cite>${item.author}</cite>
+      </article>
+    `).join('');
+  };
+
+  renderCards();
+  setInterval(renderCards, 8000);
+})();
