@@ -146,7 +146,7 @@
       return `We handle expense categorization, ledger cleanup, and bank/credit card reconciliations with a monthly close cadence${namePart ? namePart : '.'}`;
     }
     if (text.includes('ap') || text.includes('accounts payable') || text.includes('invoice')) {
-      return 'Our AP support includes invoice intake, approval routing, and payment batch prep with clear approval checkpoints.';
+      return 'AP is a secondary service. We can support invoice intake, approval routing, and payment batch prep after your core bookkeeping process is in place.';
     }
     if (text.includes('time') || text.includes('turnaround') || text.includes('how long')) {
       return 'Most teams are onboarded in 1-2 weeks, and invoice processing targets a 2-business-day turnaround after receipt.';
@@ -154,7 +154,7 @@
     if (text.includes('contact') || text.includes('email') || text.includes('phone')) {
       return 'You can reach us through the Contact page form. We typically respond within one business day.';
     }
-    return 'Thanks for your message. I can help with AP support, bookkeeping, onboarding timeline, and pricing basics. Share your details and I will use them in follow-up replies.';
+    return 'Thanks for your message. Our primary service is bookkeeping, and I can also help with AP support, onboarding timeline, and pricing basics. Share your details and I will use them in follow-up replies.';
   };
 
   const aiReply = async (userText) => {
