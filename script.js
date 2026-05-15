@@ -2,7 +2,7 @@
   const form = document.getElementById('contactForm');
   if (!form) return;
   const status = document.getElementById('formStatus');
-  const calendlyUrl = 'https://calendly.com/trustedfinr/consultation';
+  const calendlyUrl = 'https://calendly.com/trustedfinr';
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -127,7 +127,7 @@
   });
 
   showAppointmentFormButton.addEventListener('click', () => {
-    window.open('https://calendly.com/trustedfinr/consultation', '_blank', 'noopener,noreferrer');
+    window.open('https://calendly.com/trustedfinr', '_blank', 'noopener,noreferrer');
   });
 
   form.onsubmit = async (event) => {
