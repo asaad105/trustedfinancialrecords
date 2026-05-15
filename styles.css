@@ -26,3 +26,14 @@ nav a{text-decoration:none;color:var(--primary);font-weight:600;margin-left:.9re
 .dropdown summary{cursor:pointer;font-weight:700;color:#133c93;list-style:none;padding:1rem 1.05rem;position:relative}
 .dropdown summary::-webkit-details-marker{display:none}.dropdown summary::after{content:"+";position:absolute;right:1rem;top:50%;transform:translateY(-50%);font-size:1.2rem;color:#1f53bf}.dropdown[open] summary::after{content:"–"}
 .dropdown p{margin:0;padding:0 1.05rem 1rem;color:#2d4167}
+
+.about-highlight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.1rem;margin:1.2rem 0 1.6rem}
+.about-panel{background:linear-gradient(170deg,#ffffff,#f5f8ff);border:1px solid #cfdcf5;border-radius:12px;padding:1rem;box-shadow:0 10px 24px rgba(22,53,112,.08)}
+.about-feature{max-height:240px;object-fit:cover}
+.about-panel h2{margin:.9rem 0 .35rem}
+.about-panel p{margin:0;color:#2c436a}
+.about-details h2{margin-bottom:.9rem}
+.about-points{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem}
+.about-point-card{background:#fff;border:1px solid #d6e1f4;border-radius:10px;padding:1rem;box-shadow:0 8px 18px rgba(24,53,108,.07)}
+.about-point-card h3{margin:.1rem 0 .45rem;color:#153e97;font-size:1.05rem}
+.about-point-card p{margin:0;color:#2f4368}
