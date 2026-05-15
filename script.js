@@ -146,6 +146,8 @@
         form.classList.add('hidden');
         confirmation.classList.remove('hidden');
         form.reset();
+        showAppointmentFormButton.classList.remove('hidden');
+        showAppointmentFormButton.textContent = 'Book Another Appointment';
       } else {
         alert('Oops! There was a problem submitting your request.');
       }
