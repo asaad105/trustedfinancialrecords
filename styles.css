@@ -114,13 +114,42 @@ nav a:hover,nav a[aria-current="page"]{background:#e9f1ff;color:#0d3163}
 
 details{
   background:var(--surface);
-  padding:.82rem .92rem;
   border:1px solid var(--border);
-  border-radius:.6rem;
+  border-radius:.8rem;
   margin:.65rem 0;
   box-shadow:var(--shadow);
+  overflow:hidden;
 }
-summary{cursor:pointer;font-weight:600;color:#17335e}
+summary{
+  cursor:pointer;
+  font-weight:700;
+  color:#17335e;
+  list-style:none;
+  padding:.95rem 1.05rem;
+  position:relative;
+  transition:background-color .2s ease;
+}
+summary:hover{background:#f6f9ff}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:'▾';
+  position:absolute;
+  right:1rem;
+  top:50%;
+  transform:translateY(-50%);
+  color:#426da8;
+  font-size:1rem;
+}
+details[open] summary{
+  background:#f4f8ff;
+  border-bottom:1px solid var(--border);
+}
+details[open] summary::after{content:'▴'}
+details p{
+  margin:0;
+  padding:.92rem 1.05rem 1rem;
+  color:#334a6e;
+}
 blockquote{
   margin:1.25rem 0 0;
   background:var(--surface-soft);
