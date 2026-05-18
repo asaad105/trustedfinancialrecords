@@ -1,0 +1,40 @@
+{
+  "name": "Inquiry",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Contact's full name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Contact's email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact's phone number"
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Contact's company name"
+    },
+    "message": {
+      "type": "string",
+      "description": "Inquiry message"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "responded",
+        "closed"
+      ],
+      "default": "new"
+    }
+  },
+  "required": [
+    "full_name",
+    "email",
+    "message"
+  ]
+}
