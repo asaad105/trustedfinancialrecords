@@ -1,0 +1,32 @@
+{
+  "name": "Testimonial",
+  "type": "object",
+  "properties": {
+    "quote": {
+      "type": "string",
+      "description": "The testimonial quote"
+    },
+    "name": {
+      "type": "string",
+      "description": "Client's full name"
+    },
+    "title": {
+      "type": "string",
+      "description": "Client's title and company"
+    },
+    "metric": {
+      "type": "string",
+      "description": "Key result or metric highlight"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to show this testimonial publicly"
+    }
+  },
+  "required": [
+    "quote",
+    "name",
+    "title"
+  ]
+}
