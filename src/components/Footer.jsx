@@ -1,0 +1,98 @@
+import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin } from 'lucide-react';
+
+export default function Footer() {
+  return (
+    <footer className="bg-primary text-primary-foreground">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20">
+        <div className="grid md:grid-cols-3 gap-12 md:gap-16 mb-16">
+          {/* Brand */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center">
+                <span className="text-primary font-heading font-bold text-sm">TF</span>
+              </div>
+              <span className="font-heading text-lg font-semibold">Trusted Financial</span>
+            </div>
+            <p className="text-primary-foreground/60 leading-relaxed mb-6 text-sm">
+              Clean monthly books and clear reporting for tech startups and Canadian 
+              small businesses. Every client relationship starts with a real discovery call — not a sales pitch.
+            </p>
+            <div className="w-16 h-px bg-accent/30" />
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-heading text-sm tracking-[0.2em] uppercase mb-6 text-accent">
+              Navigation
+            </h4>
+            <div className="space-y-3">
+              {[
+                { label: 'Home', path: '/' },
+                { label: 'Services', path: '/#services' },
+                { label: 'About Us', path: '/#about' },
+                { label: 'Testimonials', path: '/#testimonials' },
+                { label: 'Contact', path: '/contact' },
+                { label: 'Book Consultation', path: '/book' },
+              ].map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="block text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Contact Card */}
+          <div>
+            <h4 className="font-heading text-sm tracking-[0.2em] uppercase mb-6 text-accent">
+              Get In Touch
+            </h4>
+            <div className="space-y-4">
+              <a
+                href="tel:+1234567890"
+                className="flex items-center gap-3 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+              >
+                <Phone size={16} className="text-accent" />
+                (123) 456-7890
+              </a>
+              <a
+                href="mailto:info@trustedfinr.com"
+                className="flex items-center gap-3 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+              >
+                <Mail size={16} className="text-accent" />
+                info@trustedfinr.com
+              </a>
+              <div className="flex items-start gap-3 text-sm text-primary-foreground/60">
+                <MapPin size={16} className="text-accent mt-0.5" />
+                <span>
+                  123 Business Street, Suite 100
+                  <br />
+                  New York, NY 10001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-primary-foreground/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-primary-foreground/40">
+            © {new Date().getFullYear()} Trusted Financial Records Company. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <span className="text-xs text-primary-foreground/40 hover:text-primary-foreground/60 cursor-pointer transition-colors">
+              Privacy Policy
+            </span>
+            <span className="text-xs text-primary-foreground/40 hover:text-primary-foreground/60 cursor-pointer transition-colors">
+              Terms of Service
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
