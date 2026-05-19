@@ -29,18 +29,29 @@ const sendConsultationNotification = async (appointmentData) => {
 
   const body = lines.join('\n');
 
-  try {
-    await base44.integrations.Core.SendEmail({
-      to: NOTIFICATION_EMAIL,
-      subject: `New Consultation Booking: ${appointmentData.full_name || 'Client'}`,
-      text: body,
-    });
-  } catch (error) {
-    console.error('Email notification failed', error);
-    return false;
+  const subject = `New Consultation Booking: ${appointmentData.full_name || 'Client'}`;
+
+  const payloads = [
+    { to: NOTIFICATION_EMAIL, subject, text: body },
+    { to: [NOTIFICATION_EMAIL], subject, text: body },
+    { to: NOTIFICATION_EMAIL, subject, body },
+    { to: [NOTIFICATION_EMAIL], subject, body },
+    { to: NOTIFICATION_EMAIL, subject, message: body },
+  ];
+
+  for (const payload of payloads) {
+    try {
+      await base44.integrations.Core.SendEmail(payload);
+      return true;
+    } catch (error) {
+      if (error?.status !== 422) {
+        console.error('Email notification failed', error);
+        return false;
+      }
+    }
   }
 
-  return true;
+  return false;
 };
 
 

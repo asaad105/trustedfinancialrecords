@@ -21,11 +21,29 @@ const sendInquiryNotification = async (inquiryData) => {
 
   const body = lines.join('\n');
 
-  await base44.integrations.Core.SendEmail({
-    to: NOTIFICATION_EMAIL,
-    subject: `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`,
-    text: body,
-  });
+  const subject = `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`;
+
+  const payloads = [
+    { to: NOTIFICATION_EMAIL, subject, text: body },
+    { to: [NOTIFICATION_EMAIL], subject, text: body },
+    { to: NOTIFICATION_EMAIL, subject, body },
+    { to: [NOTIFICATION_EMAIL], subject, body },
+    { to: NOTIFICATION_EMAIL, subject, message: body },
+  ];
+
+  for (const payload of payloads) {
+    try {
+      await base44.integrations.Core.SendEmail(payload);
+      return true;
+    } catch (error) {
+      if (error?.status !== 422) {
+        console.error('Inquiry email notification failed', error);
+        return false;
+      }
+    }
+  }
+
+  return false;
 };
 
 
@@ -50,7 +68,12 @@ export default function Contact() {
 
     try {
       await base44.entities.Inquiry.create(form);
-      await sendInquiryNotification(form);
+      const notificationSent = await sendInquiryNotification(form);
+
+      if (!notificationSent) {
+        console.warn('Inquiry saved but email notification failed');
+      }
+
       setSubmitted(true);
     } catch (error) {
       console.error('Inquiry submission failed', error);
