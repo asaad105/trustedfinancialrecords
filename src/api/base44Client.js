@@ -8,7 +8,8 @@ export const base44 = createClient({
   appId,
   token,
   functionsVersion,
-  serverUrl: '',
+  // Use Base44 origin directly in production instead of same-origin /api routes on GitHub Pages.
+  serverUrl: appBaseUrl || '',
   requiresAuth: false,
   appBaseUrl
 });
