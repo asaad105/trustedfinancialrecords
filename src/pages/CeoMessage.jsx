@@ -36,7 +36,7 @@ export default function CeoMessage() {
 
           <article className="prose prose-zinc max-w-none prose-p:text-foreground/90 prose-p:leading-relaxed">
             <p>
-              At TrustedFinr, we believe financial management should create clarity, stability, and confidence — not
+              At Trusted Financial Records, we believe financial management should create clarity, stability, and confidence — not
               stress and uncertainty.
             </p>
             <p>
