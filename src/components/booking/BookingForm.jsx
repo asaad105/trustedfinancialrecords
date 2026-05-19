@@ -8,7 +8,40 @@ import { Calendar as CalendarIcon, Loader2, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { base44 } from '@/api/base44Client';
 
-export default function BookingForm({ conversationData, onComplete }) {
+
+const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
+
+const sendConsultationNotification = async (appointmentData) => {
+  const lines = [
+    'New consultation request received.',
+    '',
+    `Full name: ${appointmentData.full_name || ''}`,
+    `Email: ${appointmentData.email || ''}`,
+    `Phone: ${appointmentData.phone || ''}`,
+    `Company: ${appointmentData.company_name || ''}`,
+    `Service interest: ${appointmentData.service_interest || ''}`,
+    `Preferred date: ${appointmentData.preferred_date || ''}`,
+    `Preferred time: ${appointmentData.preferred_time || ''}`,
+    `Business challenge: ${appointmentData.business_challenge || ''}`,
+    `Conversation summary: ${appointmentData.conversation_summary || ''}`,
+    `Status: ${appointmentData.status || ''}`,
+  ];
+
+  const body = lines.join('\n');
+
+  try {
+    await base44.integrations.Core.SendEmail({
+      to: NOTIFICATION_EMAIL,
+      subject: `New Consultation Booking: ${appointmentData.full_name || 'Client'}`,
+      text: body,
+    });
+  } catch (error) {
+    console.error('Email notification failed', error);
+  }
+};
+
+
+export default function BookingForm({ conversationData, onComplete = () => {} }) {
   const [form, setForm] = useState({
     full_name: '',
     email: '',
@@ -38,9 +71,10 @@ export default function BookingForm({ conversationData, onComplete }) {
     };
 
     await base44.entities.Appointment.create(appointmentData);
+    await sendConsultationNotification(appointmentData);
     setSubmitted(true);
     setSubmitting(false);
-    if (onComplete) onComplete();
+    onComplete();
   };
 
   if (submitted) {
@@ -138,6 +172,8 @@ export default function BookingForm({ conversationData, onComplete }) {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              className=""
+              classNames={{}}
               mode="single"
               selected={form.preferred_date}
               onSelect={(d) => handleChange('preferred_date', d)}
