@@ -8,7 +8,7 @@ import { Calendar as CalendarIcon, Loader2, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { base44 } from '@/api/base44Client';
 
-export default function BookingForm({ conversationData, onComplete }) {
+export default function BookingForm({ conversationData, onComplete = () => {} }) {
   const [form, setForm] = useState({
     full_name: '',
     email: '',
@@ -40,7 +40,7 @@ export default function BookingForm({ conversationData, onComplete }) {
     await base44.entities.Appointment.create(appointmentData);
     setSubmitted(true);
     setSubmitting(false);
-    if (onComplete) onComplete();
+    onComplete();
   };
 
   if (submitted) {
@@ -138,6 +138,8 @@ export default function BookingForm({ conversationData, onComplete }) {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              className=""
+              classNames={{}}
               mode="single"
               selected={form.preferred_date}
               onSelect={(d) => handleChange('preferred_date', d)}

@@ -21,6 +21,20 @@ Rules:
 
 Start with a warm, human opening — reference that you work with both startups and small Canadian businesses, and ask what brings them in today.`;
 
+const getStructuredResponse = (response) => {
+  if (typeof response === 'string') {
+    try {
+      const parsed = JSON.parse(response);
+      return parsed && typeof parsed === 'object' ? parsed : { message: response };
+    } catch {
+      return { message: response };
+    }
+  }
+
+  return response && typeof response === 'object' ? response : { message: '' };
+};
+
+
 export default function AIConsultant({ onConversationData }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -39,7 +53,7 @@ export default function AIConsultant({ onConversationData }) {
     setStarted(true);
     setLoading(true);
 
-    const response = await base44.integrations.Core.InvokeLLM({
+    const rawResponse = await base44.integrations.Core.InvokeLLM({
       prompt: SYSTEM_CONTEXT + '\n\nThe client just opened the consultation page. Send your opening greeting.',
       response_json_schema: {
         type: 'object',
@@ -50,7 +64,8 @@ export default function AIConsultant({ onConversationData }) {
       },
     });
 
-    setMessages([{ role: 'assistant', content: response.message }]);
+    const response = getStructuredResponse(rawResponse);
+    setMessages([{ role: 'assistant', content: response.message || 'Hi, I’m Alexandra. I work with both startups and small Canadian businesses — what brings you in today?' }]);
     setLoading(false);
     setTimeout(() => inputRef.current?.focus(), 100);
   };
@@ -68,7 +83,7 @@ export default function AIConsultant({ onConversationData }) {
       .map((m) => `${m.role === 'user' ? 'Client' : 'Alexandra'}: ${m.content}`)
       .join('\n');
 
-    const response = await base44.integrations.Core.InvokeLLM({
+    const rawResponse = await base44.integrations.Core.InvokeLLM({
       prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${conversationHistory}\n\nRespond as Alexandra. If this is the 3rd or 4th client message, gently suggest they fill out the booking form below while expressing genuine interest in helping them further.`,
       response_json_schema: {
         type: 'object',
@@ -84,7 +99,8 @@ export default function AIConsultant({ onConversationData }) {
       },
     });
 
-    setMessages((prev) => [...prev, { role: 'assistant', content: response.message }]);
+    const response = getStructuredResponse(rawResponse);
+    setMessages((prev) => [...prev, { role: 'assistant', content: response.message || 'Thanks for sharing that — I’d be happy to learn a bit more and help point you in the right direction.' }]);
     setLoading(false);
 
     if (response.ready_to_book && onConversationData) {

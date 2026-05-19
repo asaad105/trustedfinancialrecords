@@ -4,6 +4,8 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Custom domain is served from site root, so keep root-absolute asset URLs for all SPA routes.
+  base: '/',
   logLevel: 'error', // Suppress warnings, only show errors
   plugins: [
     base44({
