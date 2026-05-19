@@ -10,6 +10,7 @@ import { base44 } from '@/api/base44Client';
 
 
 const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
+const CALENDLY_URL = import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com/';
 
 const sendConsultationNotification = async (appointmentData) => {
   const lines = [
@@ -95,6 +96,8 @@ export default function BookingForm({ conversationData, onComplete = () => {} })
     setSubmitted(true);
     setSubmitting(false);
     onComplete();
+
+    window.location.assign(CALENDLY_URL);
   };
 
   if (submitted) {
@@ -252,7 +255,7 @@ export default function BookingForm({ conversationData, onComplete = () => {} })
             <Loader2 size={16} className="animate-spin" /> Confirming...
           </>
         ) : (
-          'Confirm Consultation'
+          'Complete Booking & Continue to Calendly'
         )}
       </button>
     </motion.form>
