@@ -1,0 +1,10 @@
+<svg width="360" height="220" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="220" rx="16" fill="#F4F4F4"/>
+  <path d="M80 132L129 86L181 132H80Z" fill="#D89A2B"/>
+  <path d="M108 132L168 66L202 102L217 83L256 126L274 102L294 124" stroke="#D89A2B" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M90 155L147 99L193 146L236 108L284 155H90Z" fill="#0F8CB8"/>
+  <path d="M105 155L153 112L192 146L232 118L267 155H105Z" fill="#073B73" opacity="0.8"/>
+  <path d="M70 168H290" stroke="#B57D20" stroke-width="5" stroke-linecap="round"/>
+  <text x="180" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111">Trusted Financial Records</text>
+  <text x="180" y="213" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111">Company Inc.</text>
+</svg>
