@@ -52,7 +52,7 @@ export default function Book() {
                 onClick={() => setShowForm(true)}
                 className="text-accent text-sm font-medium tracking-wide uppercase hover:underline"
               >
-                Go directly to booking form →
+                Go directly to Calendly →
               </button>
             </div>
           ) : (
@@ -64,7 +64,7 @@ export default function Book() {
               <div className="mb-8">
                 <h2 className="font-heading text-2xl font-semibold mb-2">Complete Your Booking</h2>
                 <p className="text-muted-foreground text-sm">
-                  Fill in your details, then we'll redirect you to Calendly to complete your booking instantly.
+                  Skip the extra form — continue to Calendly to pick your exact time and complete booking.
                 </p>
               </div>
               <BookingForm conversationData={conversationData} />
