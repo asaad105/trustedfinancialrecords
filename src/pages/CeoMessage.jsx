@@ -1,6 +1,9 @@
-import ceoPhoto from '@/assets/ceo-photo.svg';
+import { useState } from 'react';
+import ceoPhotoFallback from '@/assets/ceo-photo.svg';
 
 export default function CeoMessage() {
+  const [photoSrc, setPhotoSrc] = useState('/ceo-picture.png');
+
   return (
     <main className="bg-background pt-32 pb-20">
       <section className="max-w-6xl mx-auto px-6 lg:px-12">
@@ -10,16 +13,17 @@ export default function CeoMessage() {
             Leadership Built on Experience, Trust, and Financial Clarity
           </h1>
           <p className="text-muted-foreground max-w-3xl mx-auto">
-            A message from founder &amp; CEO of Trusted Financial Records Company
+            A message from Asaad Ahmed, Founder &amp; CEO of TrustedFinr.
           </p>
         </header>
 
         <div className="grid lg:grid-cols-[320px,1fr] gap-10 lg:gap-14 items-start mb-14">
-          <aside className="bg-card border border-border rounded-2xl p-6 lg:sticky lg:top-28">
+          <aside className="bg-card border border-border rounded-2xl p-6 sticky top-28">
             <img
-              src={ceoPhoto}
+              src={photoSrc}
               alt="Asaad Ahmed, Founder and CEO of TrustedFinr"
               className="w-full rounded-xl border border-border object-cover aspect-square mb-5"
+              onError={() => setPhotoSrc(ceoPhotoFallback)}
             />
             <h2 className="font-heading text-2xl text-foreground mb-3">CEO Intro</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
