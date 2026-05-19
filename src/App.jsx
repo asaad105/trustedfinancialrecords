@@ -10,6 +10,8 @@ import Home from './pages/Home';
 import Book from './pages/Book';
 import Contact from './pages/Contact';
 import AdminTestimonials from './pages/AdminTestimonials';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -40,6 +42,8 @@ const AuthenticatedApp = () => {
         <Route path="/" element={<Home />} />
         <Route path="/book" element={<Book />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
       </Route>
       <Route path="/admin/testimonials" element={<AdminTestimonials />} />
       <Route path="*" element={<PageNotFound />} />

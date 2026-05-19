@@ -82,12 +82,12 @@ export default function Footer() {
             © {new Date().getFullYear()} Trusted Financial Records Company. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <span className="text-xs text-primary-foreground/40 hover:text-primary-foreground/60 cursor-pointer transition-colors">
+            <Link to="/privacy-policy" className="text-xs text-primary-foreground/40 hover:text-primary-foreground/60 transition-colors">
               Privacy Policy
-            </span>
-            <span className="text-xs text-primary-foreground/40 hover:text-primary-foreground/60 cursor-pointer transition-colors">
+            </Link>
+            <Link to="/terms-of-service" className="text-xs text-primary-foreground/40 hover:text-primary-foreground/60 transition-colors">
               Terms of Service
-            </span>
+            </Link>
           </div>
         </div>
       </div>
