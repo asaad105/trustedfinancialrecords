@@ -10,7 +10,7 @@ export default function CeoMessage() {
             Leadership Built on Experience, Trust, and Financial Clarity
           </h1>
           <p className="text-muted-foreground max-w-3xl mx-auto">
-            A message from Asaad Ahmed, Founder &amp; CEO of TrustedFinr.
+            A message from founder &amp; CEO of Trusted Financial Records Company
           </p>
         </header>
 
