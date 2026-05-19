@@ -15,7 +15,7 @@ export default function CeoMessage() {
         </header>
 
         <div className="grid lg:grid-cols-[320px,1fr] gap-10 lg:gap-14 items-start mb-14">
-          <aside className="bg-card border border-border rounded-2xl p-6 sticky top-28">
+          <aside className="bg-card border border-border rounded-2xl p-6 lg:sticky lg:top-28">
             <img
               src={ceoPhoto}
               alt="Asaad Ahmed, Founder and CEO of TrustedFinr"
