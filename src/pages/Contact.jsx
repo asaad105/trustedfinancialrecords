@@ -15,15 +15,24 @@ export default function Contact() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (field, value) => setForm((p) => ({ ...p, [field]: value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    await base44.entities.Inquiry.create(form);
-    setSubmitted(true);
-    setSubmitting(false);
+    setSubmitError('');
+
+    try {
+      await base44.entities.Inquiry.create(form);
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Inquiry submission failed', error);
+      setSubmitError('We could not send your message right now. Please try again or email us directly at info@trustedfinr.com.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -123,6 +132,9 @@ export default function Contact() {
                     placeholder="Tell us how we can help..."
                   />
                 </div>
+                {submitError && (
+                  <p className="text-sm text-destructive">{submitError}</p>
+                )}
                 <button
                   type="submit"
                   disabled={submitting}
