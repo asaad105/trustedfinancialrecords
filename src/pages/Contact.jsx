@@ -23,7 +23,7 @@ const sendInquiryNotification = async (inquiryData) => {
 
   try {
     await base44.integrations.Core.SendEmail({
-      to: [NOTIFICATION_EMAIL],
+      to: NOTIFICATION_EMAIL,
       subject,
       body,
       reply_to: inquiryData.email,
