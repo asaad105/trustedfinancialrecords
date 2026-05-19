@@ -26,7 +26,7 @@ export default function Book() {
             No pressure. Just us.
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Tell us a bit about your business below, or chat with our advisor Alexandra first. 
+            Tell us a bit about your business below, or chat with our advisor Zain first. 
             Either way, the goal is simple — understand what you need and see if we're the right fit.
           </p>
         </motion.div>
