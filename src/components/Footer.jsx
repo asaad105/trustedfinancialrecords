@@ -53,11 +53,11 @@ export default function Footer() {
             </h4>
             <div className="space-y-4">
               <a
-                href="tel:+1234567890"
+                href="tel:+14035128898"
                 className="flex items-center gap-3 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
               >
                 <Phone size={16} className="text-accent" />
-                (123) 456-7890
+                +1 (403) 512-8898
               </a>
               <a
                 href="mailto:info@trustedfinr.com"
@@ -69,9 +69,9 @@ export default function Footer() {
               <div className="flex items-start gap-3 text-sm text-primary-foreground/60">
                 <MapPin size={16} className="text-accent mt-0.5" />
                 <span>
-                  123 Business Street, Suite 100
+                  166 Sherwood Mount NW
                   <br />
-                  New York, NY 10001
+                  Calgary, AB T3R0G5
                 </span>
               </div>
             </div>
