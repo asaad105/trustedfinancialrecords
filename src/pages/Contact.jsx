@@ -57,10 +57,11 @@ export default function Contact() {
     try {
       await base44.entities.Inquiry.create(form);
 
-      const notificationSent = await sendInquiryNotification(form);
-      if (!notificationSent) {
-        console.warn('Inquiry saved but email notification failed');
-      }
+      void sendInquiryNotification(form).then((notificationSent) => {
+        if (!notificationSent) {
+          console.warn('Inquiry saved but email notification failed');
+        }
+      });
 
       setSubmitted(true);
     } catch (error) {
