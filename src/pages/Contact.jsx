@@ -5,6 +5,48 @@ import { Textarea } from '@/components/ui/textarea';
 import { Mail, Phone, MapPin, Clock, Loader2, CheckCircle2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
+
+const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
+
+const sendInquiryNotification = async (inquiryData) => {
+  const lines = [
+    'New contact inquiry received.',
+    '',
+    `Full name: ${inquiryData.full_name || ''}`,
+    `Email: ${inquiryData.email || ''}`,
+    `Phone: ${inquiryData.phone || ''}`,
+    `Company: ${inquiryData.company_name || ''}`,
+    `Message: ${inquiryData.message || ''}`,
+  ];
+
+  const body = lines.join('\n');
+
+  const subject = `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`;
+
+  const payloads = [
+    { to: NOTIFICATION_EMAIL, subject, body },
+    { to: [NOTIFICATION_EMAIL], subject, body },
+    { to: NOTIFICATION_EMAIL, subject, text: body },
+    { to: [NOTIFICATION_EMAIL], subject, text: body },
+    { to: NOTIFICATION_EMAIL, subject, message: body },
+  ];
+
+  for (const payload of payloads) {
+    try {
+      await base44.integrations.Core.SendEmail(payload);
+      return true;
+    } catch (error) {
+      if (error?.status !== 422) {
+        console.error('Inquiry email notification failed', error);
+        return false;
+      }
+    }
+  }
+
+  return false;
+};
+
+
 export default function Contact() {
   const [form, setForm] = useState({
     full_name: '',
@@ -15,15 +57,30 @@ export default function Contact() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (field, value) => setForm((p) => ({ ...p, [field]: value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    await base44.entities.Inquiry.create(form);
-    setSubmitted(true);
-    setSubmitting(false);
+    setSubmitError('');
+
+    try {
+      await base44.entities.Inquiry.create(form);
+      const notificationSent = await sendInquiryNotification(form);
+
+      if (!notificationSent) {
+        console.warn('Inquiry saved but email notification failed');
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Inquiry submission failed', error);
+      setSubmitError('We could not submit your message right now. Please try again or email us directly at info@trustedfinr.com.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -123,6 +180,9 @@ export default function Contact() {
                     placeholder="Tell us how we can help..."
                   />
                 </div>
+                {submitError && (
+                  <p className="text-sm text-destructive">{submitError}</p>
+                )}
                 <button
                   type="submit"
                   disabled={submitting}
@@ -144,13 +204,13 @@ export default function Contact() {
             <div>
               <h3 className="font-heading text-lg font-semibold mb-6">Direct Contact</h3>
               <div className="space-y-5">
-                <a href="tel:+1234567890" className="flex items-center gap-4 group">
+                <a href="tel:+14035128898" className="flex items-center gap-4 group">
                   <div className="w-10 h-10 border border-border flex items-center justify-center group-hover:border-accent transition-colors">
                     <Phone size={16} className="text-accent" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wide">Phone</p>
-                    <p className="text-sm font-medium">(123) 456-7890</p>
+                    <p className="text-sm font-medium">+1 (403) 512-8898</p>
                   </div>
                 </a>
                 <a href="mailto:info@trustedfinr.com" className="flex items-center gap-4 group">
@@ -168,7 +228,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wide">Office</p>
-                    <p className="text-sm font-medium">123 Business Street, Suite 100<br />New York, NY 10001</p>
+                    <p className="text-sm font-medium">166 Sherwood Mount NW<br />Calgary, AB T3R0G5</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
