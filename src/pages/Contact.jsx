@@ -5,8 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Mail, Phone, MapPin, Clock, Loader2, CheckCircle2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
-
-const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
+const NOTIFICATION_EMAIL = 'info@trustedfinr.com';
 
 const sendInquiryNotification = async (inquiryData) => {
   const lines = [
@@ -20,32 +19,21 @@ const sendInquiryNotification = async (inquiryData) => {
   ];
 
   const body = lines.join('\n');
-
   const subject = `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`;
 
-  const payloads = [
-    { to: NOTIFICATION_EMAIL, subject, body },
-    { to: [NOTIFICATION_EMAIL], subject, body },
-    { to: NOTIFICATION_EMAIL, subject, text: body },
-    { to: [NOTIFICATION_EMAIL], subject, text: body },
-    { to: NOTIFICATION_EMAIL, subject, message: body },
-  ];
-
-  for (const payload of payloads) {
-    try {
-      await base44.integrations.Core.SendEmail(payload);
-      return true;
-    } catch (error) {
-      if (error?.status !== 422) {
-        console.error('Inquiry email notification failed', error);
-        return false;
-      }
-    }
+  try {
+    await base44.integrations.Core.SendEmail({
+      to: [NOTIFICATION_EMAIL],
+      subject,
+      body,
+      reply_to: inquiryData.email,
+    });
+    return true;
+  } catch (error) {
+    console.error('Inquiry email notification failed', error);
+    return false;
   }
-
-  return false;
 };
-
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -68,8 +56,8 @@ export default function Contact() {
 
     try {
       await base44.entities.Inquiry.create(form);
-      const notificationSent = await sendInquiryNotification(form);
 
+      const notificationSent = await sendInquiryNotification(form);
       if (!notificationSent) {
         console.warn('Inquiry saved but email notification failed');
       }
@@ -241,19 +229,6 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="border-t border-border pt-8">
-              <h3 className="font-heading text-lg font-semibold mb-3">Prefer a Call?</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Schedule a complimentary consultation and speak directly with a senior financial specialist.
-              </p>
-              <a
-                href="/book"
-                className="text-accent text-sm font-medium tracking-wide uppercase hover:underline"
-              >
-                Book a Consultation →
-              </a>
             </div>
           </motion.div>
         </div>
