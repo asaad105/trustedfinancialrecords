@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ceoPhotoFallback from '@/assets/ceo-photo.svg';
+import ceoPhotoFallback from '@/assets/ceo-picture.png';
 
 export default function CeoMessage() {
   const [photoSrc, setPhotoSrc] = useState('/ceo-picture.png');
@@ -13,7 +13,7 @@ export default function CeoMessage() {
             Leadership Built on Experience, Trust, and Financial Clarity
           </h1>
           <p className="text-muted-foreground max-w-3xl mx-auto">
-            A message from Asaad Ahmed, Founder &amp; CEO of TrustedFinr.
+            A message from the Founder &amp; CEO of Trusted Financial Records.
           </p>
         </header>
 
@@ -27,7 +27,7 @@ export default function CeoMessage() {
             />
             <h2 className="font-heading text-2xl text-foreground mb-3">CEO Intro</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Asaad Ahmed is the Founder and CEO of TrustedFinr, bringing over two decades of experience in
+              Asaad is the Founder and CEO of Trusted Financial Records, bringing over two decades of experience in
               accounting, financial operations, and business support. His leadership is built on professionalism,
               integrity, and a commitment to helping individuals and businesses achieve long-term financial clarity
               and stability.
