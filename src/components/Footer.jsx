@@ -31,6 +31,7 @@ export default function Footer() {
                 { label: 'About Us', path: '/#about' },
                 { label: 'Testimonials', path: '/#testimonials' },
                 { label: 'Contact', path: '/contact' },
+                { label: 'CEO Message', path: '/ceo-message' },
                 { label: 'Book Consultation', path: '/book' },
               ].map((link) => (
                 <Link
