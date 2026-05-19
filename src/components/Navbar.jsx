@@ -49,7 +49,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="Trusted Financial Records logo" className="h-12 w-auto" />
+            <img src={logo} alt="Trusted Financial Records logo" className="h-14 w-auto" />
             <div className="hidden sm:block">
               <span className="font-heading text-lg font-semibold tracking-tight text-foreground">Trusted Financial Records</span>
             </div>
