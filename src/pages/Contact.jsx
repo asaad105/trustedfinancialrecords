@@ -6,45 +6,6 @@ import { Mail, Phone, MapPin, Clock, Loader2, CheckCircle2 } from 'lucide-react'
 import { base44 } from '@/api/base44Client';
 
 
-const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
-
-const sendInquiryNotification = async (inquiryData) => {
-  const lines = [
-    'New contact inquiry received.',
-    '',
-    `Full name: ${inquiryData.full_name || ''}`,
-    `Email: ${inquiryData.email || ''}`,
-    `Phone: ${inquiryData.phone || ''}`,
-    `Company: ${inquiryData.company_name || ''}`,
-    `Message: ${inquiryData.message || ''}`,
-  ];
-
-  const body = lines.join('\n');
-
-  const subject = `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`;
-
-  const payloads = [
-    { to: NOTIFICATION_EMAIL, subject, body },
-    { to: [NOTIFICATION_EMAIL], subject, body },
-    { to: NOTIFICATION_EMAIL, subject, text: body },
-    { to: [NOTIFICATION_EMAIL], subject, text: body },
-    { to: NOTIFICATION_EMAIL, subject, message: body },
-  ];
-
-  for (const payload of payloads) {
-    try {
-      await base44.integrations.Core.SendEmail(payload);
-      return true;
-    } catch (error) {
-      if (error?.status !== 422) {
-        console.error('Inquiry email notification failed', error);
-        return false;
-      }
-    }
-  }
-
-  return false;
-};
 
 
 export default function Contact() {
@@ -68,12 +29,6 @@ export default function Contact() {
 
     try {
       await base44.entities.Inquiry.create(form);
-      const notificationSent = await sendInquiryNotification(form);
-
-      if (!notificationSent) {
-        console.warn('Inquiry saved but email notification failed');
-      }
-
       setSubmitted(true);
     } catch (error) {
       console.error('Inquiry submission failed', error);
