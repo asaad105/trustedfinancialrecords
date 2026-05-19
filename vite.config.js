@@ -4,8 +4,8 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Use relative asset URLs so CSS/JS load correctly on GitHub Pages and custom domains.
-  base: './',
+  // Custom domain is served from site root, so keep root-absolute asset URLs for all SPA routes.
+  base: '/',
   logLevel: 'error', // Suppress warnings, only show errors
   plugins: [
     base44({
