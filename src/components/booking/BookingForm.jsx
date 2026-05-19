@@ -31,8 +31,12 @@ const sendConsultationNotification = async (appointmentData) => {
 
   const subject = `New Consultation Booking: ${appointmentData.full_name || 'Client'}`;
 
+  const messagePayload = { to: NOTIFICATION_EMAIL, subject, text: body };
+
   const payloads = [
-    { to: NOTIFICATION_EMAIL, subject, text: body },
+    { body: messagePayload },
+    { body: { ...messagePayload, to: [NOTIFICATION_EMAIL] } },
+    messagePayload,
     { to: [NOTIFICATION_EMAIL], subject, text: body },
     { to: NOTIFICATION_EMAIL, subject, body },
     { to: [NOTIFICATION_EMAIL], subject, body },
