@@ -4,6 +4,8 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Use relative asset URLs so CSS/JS load correctly on GitHub Pages and custom domains.
+  base: './',
   logLevel: 'error', // Suppress warnings, only show errors
   plugins: [
     base44({

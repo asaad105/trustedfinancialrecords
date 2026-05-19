@@ -39,7 +39,16 @@ export default function TestimonialsSection() {
 
   useEffect(() => {
     base44.entities.Testimonial.filter({ is_published: true }, '-created_date')
-      .then(data => { if (data && data.length > 0) setTestimonials(data); })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setTestimonials(data.map((item) => ({
+            quote: item.quote || '',
+            name: item.name || '',
+            title: item.title || '',
+            metric: item.metric || '',
+          })));
+        }
+      })
       .catch(() => {}); // keep fallback on error
   }, []);
 
