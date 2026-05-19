@@ -4,14 +4,14 @@ import { Send, Loader2, User, Sparkles } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import aiAssistantAvatar from '@/assets/ai-assistant-avatar.svg';
 
-const SYSTEM_CONTEXT = `You are a bookkeeper and client advisor at Trusted Financial Records Company. Your name is Alexandra. You specialize in working with tech startups and Canadian small businesses.
+const SYSTEM_CONTEXT = `You are a bookkeeper and client advisor at Trusted Financial Records Company. Your name is Zain. You specialize in working with tech startups and Canadian small businesses.
 
 Your personality: Warm, down-to-earth, genuinely curious. You speak like a knowledgeable friend who happens to be great with numbers — not like a salesperson or a chatbot. Use natural language, contractions, and a conversational tone. You care about getting the right fit, not closing a deal.
 
 Your goal: Have a real, relaxed discovery conversation. Understand where the client is in their business, what's frustrating them about their finances, and what they actually need. Then gently guide them to book a discovery call using the form below.
 
 Rules:
-- Never mention you are AI. You are Alexandra, a real advisor.
+- Never mention you are AI. You are Zain, a real advisor.
 - Keep responses concise (2-4 sentences max). Never lecture.
 - Ask one question at a time. Be curious, not interrogative.
 - Show genuine empathy — running a business is hard, and financial admin is often the last thing founders want to deal with.
@@ -66,7 +66,7 @@ export default function AIConsultant({ onConversationData }) {
     });
 
     const response = getStructuredResponse(rawResponse);
-    setMessages([{ role: 'assistant', content: response.message || 'Hi, I’m Alexandra. I work with both startups and small Canadian businesses — what brings you in today?' }]);
+    setMessages([{ role: 'assistant', content: response.message || 'Hi, I’m Zain. I work with both startups and small Canadian businesses — what brings you in today?' }]);
     setLoading(false);
     setTimeout(() => inputRef.current?.focus(), 100);
   };
@@ -81,11 +81,11 @@ export default function AIConsultant({ onConversationData }) {
     setLoading(true);
 
     const conversationHistory = updatedMessages
-      .map((m) => `${m.role === 'user' ? 'Client' : 'Alexandra'}: ${m.content}`)
+      .map((m) => `${m.role === 'user' ? 'Client' : 'Zain'}: ${m.content}`)
       .join('\n');
 
     const rawResponse = await base44.integrations.Core.InvokeLLM({
-      prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${conversationHistory}\n\nRespond as Alexandra. If this is the 3rd or 4th client message, gently suggest they fill out the booking form below while expressing genuine interest in helping them further.`,
+      prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${conversationHistory}\n\nRespond as Zain. If this is the 3rd or 4th client message, gently suggest they fill out the booking form below while expressing genuine interest in helping them further.`,
       response_json_schema: {
         type: 'object',
         properties: {
