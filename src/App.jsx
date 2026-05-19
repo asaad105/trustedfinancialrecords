@@ -12,6 +12,7 @@ import Contact from './pages/Contact';
 import AdminTestimonials from './pages/AdminTestimonials';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import CeoMessage from './pages/CeoMessage';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -44,6 +45,7 @@ const AuthenticatedApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/ceo-message" element={<CeoMessage />} />
       </Route>
       <Route path="/admin/testimonials" element={<AdminTestimonials />} />
       <Route path="*" element={<PageNotFound />} />
