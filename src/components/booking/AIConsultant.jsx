@@ -2,15 +2,16 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, User, Sparkles } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import aiAssistantAvatar from '@/assets/ai-assistant-avatar.svg';
 
-const SYSTEM_CONTEXT = `You are a bookkeeper and client advisor at Trusted Financial Records Company. Your name is Alexandra. You specialize in working with tech startups and Canadian small businesses.
+const SYSTEM_CONTEXT = `You are a bookkeeper and client advisor at Trusted Financial Records Company. Your name is Zain. You specialize in working with tech startups and Canadian small businesses.
 
 Your personality: Warm, down-to-earth, genuinely curious. You speak like a knowledgeable friend who happens to be great with numbers — not like a salesperson or a chatbot. Use natural language, contractions, and a conversational tone. You care about getting the right fit, not closing a deal.
 
 Your goal: Have a real, relaxed discovery conversation. Understand where the client is in their business, what's frustrating them about their finances, and what they actually need. Then gently guide them to book a discovery call using the form below.
 
 Rules:
-- Never mention you are AI. You are Alexandra, a real advisor.
+- Never mention you are AI. You are Zain, a real advisor.
 - Keep responses concise (2-4 sentences max). Never lecture.
 - Ask one question at a time. Be curious, not interrogative.
 - Show genuine empathy — running a business is hard, and financial admin is often the last thing founders want to deal with.
@@ -65,7 +66,7 @@ export default function AIConsultant({ onConversationData }) {
     });
 
     const response = getStructuredResponse(rawResponse);
-    setMessages([{ role: 'assistant', content: response.message || 'Hi, I’m Alexandra. I work with both startups and small Canadian businesses — what brings you in today?' }]);
+    setMessages([{ role: 'assistant', content: response.message || 'Hi, I’m Zain. I work with both startups and small Canadian businesses — what brings you in today?' }]);
     setLoading(false);
     setTimeout(() => inputRef.current?.focus(), 100);
   };
@@ -80,11 +81,11 @@ export default function AIConsultant({ onConversationData }) {
     setLoading(true);
 
     const conversationHistory = updatedMessages
-      .map((m) => `${m.role === 'user' ? 'Client' : 'Alexandra'}: ${m.content}`)
+      .map((m) => `${m.role === 'user' ? 'Client' : 'Zain'}: ${m.content}`)
       .join('\n');
 
     const rawResponse = await base44.integrations.Core.InvokeLLM({
-      prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${conversationHistory}\n\nRespond as Alexandra. If this is the 3rd or 4th client message, gently suggest they fill out the booking form below while expressing genuine interest in helping them further.`,
+      prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${conversationHistory}\n\nRespond as Zain. If this is the 3rd or 4th client message, gently suggest they fill out the booking form below while expressing genuine interest in helping them further.`,
       response_json_schema: {
         type: 'object',
         properties: {
@@ -132,7 +133,7 @@ export default function AIConsultant({ onConversationData }) {
           Meet Your Financial Consultant
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto mb-8 leading-relaxed text-sm">
-          Have a brief conversation with Alexandra, one of our senior consultants, to help us 
+          Have a brief conversation with our AI Assistant to help us 
           understand your needs before scheduling your appointment.
         </p>
         <button
@@ -149,12 +150,9 @@ export default function AIConsultant({ onConversationData }) {
     <div className="border border-border bg-background">
       {/* Header */}
       <div className="px-6 py-4 border-b border-border flex items-center gap-3">
-        <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center">
-          <span className="text-accent font-heading text-xs font-semibold">A</span>
-        </div>
+        <img src={aiAssistantAvatar} alt="AI Assistant profile" className="w-8 h-8 rounded-full object-cover" />
         <div>
-          <p className="text-sm font-medium">Alexandra Chen</p>
-          <p className="text-xs text-muted-foreground">Senior Financial Consultant</p>
+          <p className="text-sm font-medium">AI Assistant</p>
         </div>
         <div className="ml-auto flex items-center gap-1.5">
           <span className="w-2 h-2 bg-green-500 rounded-full" />
@@ -174,9 +172,7 @@ export default function AIConsultant({ onConversationData }) {
               className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.role === 'assistant' && (
-                <div className="w-7 h-7 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-accent text-[10px] font-bold">A</span>
-                </div>
+                <img src={aiAssistantAvatar} alt="AI Assistant profile" className="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-1" />
               )}
               <div
                 className={`max-w-[80%] px-4 py-3 text-sm leading-relaxed ${
@@ -197,9 +193,7 @@ export default function AIConsultant({ onConversationData }) {
         </AnimatePresence>
         {loading && (
           <div className="flex gap-3">
-            <div className="w-7 h-7 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-accent text-[10px] font-bold">A</span>
-            </div>
+            <img src={aiAssistantAvatar} alt="AI Assistant profile" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
             <div className="bg-secondary px-4 py-3 flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
               <span className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />

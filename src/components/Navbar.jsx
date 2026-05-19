@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '@/assets/tfr-logo.svg';
 
 const navLinks = [
 { label: 'Home', path: '/' },
@@ -48,13 +49,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center">
-              <span className="text-primary-foreground font-heading font-bold text-sm">TFR</span>
-            </div>
+            <img src={logo} alt="Trusted Financial Records logo" className="h-14 w-auto" />
             <div className="hidden sm:block">
-              <span className="font-heading text-lg font-semibold tracking-tight text-foreground">Trusted Financial Records
-
-              </span>
+              <span className="font-heading text-lg font-semibold tracking-tight text-foreground">Trusted Financial Records</span>
             </div>
           </Link>
 
