@@ -23,15 +23,11 @@ const sendInquiryNotification = async (inquiryData) => {
 
   const subject = `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`;
 
-  const messagePayload = { to: NOTIFICATION_EMAIL, subject, text: body };
-
   const payloads = [
-    { body: messagePayload },
-    { body: { ...messagePayload, to: [NOTIFICATION_EMAIL] } },
-    messagePayload,
-    { to: [NOTIFICATION_EMAIL], subject, text: body },
     { to: NOTIFICATION_EMAIL, subject, body },
     { to: [NOTIFICATION_EMAIL], subject, body },
+    { to: NOTIFICATION_EMAIL, subject, text: body },
+    { to: [NOTIFICATION_EMAIL], subject, text: body },
     { to: NOTIFICATION_EMAIL, subject, message: body },
   ];
 
