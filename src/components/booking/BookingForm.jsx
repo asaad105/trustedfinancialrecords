@@ -8,7 +8,43 @@ import { Calendar as CalendarIcon, Loader2, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { base44 } from '@/api/base44Client';
 
-export default function BookingForm({ conversationData, onComplete }) {
+
+const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
+
+const sendConsultationNotification = async (appointmentData) => {
+  const lines = [
+    'New consultation request received.',
+    '',
+    `Full name: ${appointmentData.full_name || ''}`,
+    `Email: ${appointmentData.email || ''}`,
+    `Phone: ${appointmentData.phone || ''}`,
+    `Company: ${appointmentData.company_name || ''}`,
+    `Service interest: ${appointmentData.service_interest || ''}`,
+    `Preferred date: ${appointmentData.preferred_date || ''}`,
+    `Preferred time: ${appointmentData.preferred_time || ''}`,
+    `Business challenge: ${appointmentData.business_challenge || ''}`,
+    `Conversation summary: ${appointmentData.conversation_summary || ''}`,
+    `Status: ${appointmentData.status || ''}`,
+  ];
+
+  const body = lines.join('\n');
+
+  try {
+    await base44.integrations.Core.SendEmail({
+      to: NOTIFICATION_EMAIL,
+      subject: `New Consultation Booking: ${appointmentData.full_name || 'Client'}`,
+      text: body,
+    });
+  } catch (error) {
+    console.error('Email notification failed', error);
+    return false;
+  }
+
+  return true;
+};
+
+
+export default function BookingForm({ conversationData, onComplete = () => {} }) {
   const [form, setForm] = useState({
     full_name: '',
     email: '',
@@ -20,6 +56,7 @@ export default function BookingForm({ conversationData, onComplete }) {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [notificationWarning, setNotificationWarning] = useState('');
 
   const handleChange = (field, value) => {
     setForm((p) => ({ ...p, [field]: value }));
@@ -38,9 +75,15 @@ export default function BookingForm({ conversationData, onComplete }) {
     };
 
     await base44.entities.Appointment.create(appointmentData);
+    const notificationSent = await sendConsultationNotification(appointmentData);
+
+    if (!notificationSent) {
+      setNotificationWarning('Your consultation was saved, but email notification to our team failed. We will still review your request in the dashboard.');
+    }
+
     setSubmitted(true);
     setSubmitting(false);
-    if (onComplete) onComplete();
+    onComplete();
   };
 
   if (submitted) {
@@ -58,6 +101,9 @@ export default function BookingForm({ conversationData, onComplete }) {
           Thanks, {form.full_name}! We'll be in touch within one business day to confirm your discovery call. 
           Come as you are — no prep needed, just an open conversation.
         </p>
+        {notificationWarning && (
+          <p className="text-sm text-destructive mt-4 max-w-md mx-auto">{notificationWarning}</p>
+        )}
       </motion.div>
     );
   }
@@ -138,6 +184,8 @@ export default function BookingForm({ conversationData, onComplete }) {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              className=""
+              classNames={{}}
               mode="single"
               selected={form.preferred_date}
               onSelect={(d) => handleChange('preferred_date', d)}
