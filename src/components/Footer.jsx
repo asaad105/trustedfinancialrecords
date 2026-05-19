@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import logo from '@/assets/tfr-logo.svg';
 
 export default function Footer() {
   return (
@@ -9,10 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center">
-                <span className="text-primary font-heading font-bold text-sm">TF</span>
-              </div>
-              <span className="font-heading text-lg font-semibold">Trusted Financial</span>
+              <img src={logo} alt="Trusted Financial Records logo" className="h-14 w-auto rounded-md bg-white/10 p-1" />
             </div>
             <p className="text-primary-foreground/60 leading-relaxed mb-6 text-sm">
               Clean monthly books and clear reporting for tech startups and Canadian 
