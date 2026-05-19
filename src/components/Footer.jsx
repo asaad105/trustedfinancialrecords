@@ -78,7 +78,6 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-primary-foreground/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <img src={logo} alt="Trusted Financial Records logo" className="h-10 w-auto rounded-sm bg-white/10 p-1" />
           <p className="text-xs text-primary-foreground/40">
             © {new Date().getFullYear()} Trusted Financial Records Company. All rights reserved.
           </p>
