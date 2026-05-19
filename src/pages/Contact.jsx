@@ -5,6 +5,30 @@ import { Textarea } from '@/components/ui/textarea';
 import { Mail, Phone, MapPin, Clock, Loader2, CheckCircle2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
+
+const NOTIFICATION_EMAIL = 'trustedfinancialofficial@gmail.com';
+
+const sendInquiryNotification = async (inquiryData) => {
+  const lines = [
+    'New contact inquiry received.',
+    '',
+    `Full name: ${inquiryData.full_name || ''}`,
+    `Email: ${inquiryData.email || ''}`,
+    `Phone: ${inquiryData.phone || ''}`,
+    `Company: ${inquiryData.company_name || ''}`,
+    `Message: ${inquiryData.message || ''}`,
+  ];
+
+  const body = lines.join('\n');
+
+  await base44.integrations.Core.SendEmail({
+    to: NOTIFICATION_EMAIL,
+    subject: `New Contact Inquiry: ${inquiryData.full_name || 'Contact'}`,
+    text: body,
+  });
+};
+
+
 export default function Contact() {
   const [form, setForm] = useState({
     full_name: '',
@@ -26,10 +50,11 @@ export default function Contact() {
 
     try {
       await base44.entities.Inquiry.create(form);
+      await sendInquiryNotification(form);
       setSubmitted(true);
     } catch (error) {
       console.error('Inquiry submission failed', error);
-      setSubmitError('We could not send your message right now. Please try again or email us directly at info@trustedfinr.com.');
+      setSubmitError('We could not submit your message right now. Please try again or email us directly at info@trustedfinr.com.');
     } finally {
       setSubmitting(false);
     }

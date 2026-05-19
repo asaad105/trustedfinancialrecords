@@ -37,7 +37,10 @@ const sendConsultationNotification = async (appointmentData) => {
     });
   } catch (error) {
     console.error('Email notification failed', error);
+    return false;
   }
+
+  return true;
 };
 
 
@@ -53,6 +56,7 @@ export default function BookingForm({ conversationData, onComplete = () => {} })
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [notificationWarning, setNotificationWarning] = useState('');
 
   const handleChange = (field, value) => {
     setForm((p) => ({ ...p, [field]: value }));
@@ -71,7 +75,12 @@ export default function BookingForm({ conversationData, onComplete = () => {} })
     };
 
     await base44.entities.Appointment.create(appointmentData);
-    await sendConsultationNotification(appointmentData);
+    const notificationSent = await sendConsultationNotification(appointmentData);
+
+    if (!notificationSent) {
+      setNotificationWarning('Your consultation was saved, but email notification to our team failed. We will still review your request in the dashboard.');
+    }
+
     setSubmitted(true);
     setSubmitting(false);
     onComplete();
@@ -92,6 +101,9 @@ export default function BookingForm({ conversationData, onComplete = () => {} })
           Thanks, {form.full_name}! We'll be in touch within one business day to confirm your discovery call. 
           Come as you are — no prep needed, just an open conversation.
         </p>
+        {notificationWarning && (
+          <p className="text-sm text-destructive mt-4 max-w-md mx-auto">{notificationWarning}</p>
+        )}
       </motion.div>
     );
   }
