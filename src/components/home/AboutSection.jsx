@@ -5,7 +5,7 @@ import LetterReveal from '../LetterReveal';
 const tools = ['Xero', 'QuickBooks', 'Sage'];
 
 const whyChooseUs = [
-  'Xero Certified Specialist (Level 3)',
+  'Xero Certified Specialist',
   'Migration Specialist',
   'Cloud accounting expertise',
   'AR & revenue cycle management',

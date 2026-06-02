@@ -87,9 +87,9 @@ export default function HeroSection({ heroImage }) {
             transition={{ duration: 0.8, delay: 2.55 }}
             className="flex flex-wrap items-center gap-3 mb-10"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-accent">
-              <CheckCircle2 size={14} />
-              Xero Certified Specialist (Level 3)
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-5 py-3 text-sm md:text-base font-extrabold uppercase tracking-[0.18em] text-accent">
+              <CheckCircle2 size={18} />
+              Xero Certified Specialist
             </span>
             <img
               src="/xero-migration-specialist.svg"
