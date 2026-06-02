@@ -2,6 +2,16 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import LetterReveal from '../LetterReveal';
 
+const tools = ['Xero', 'QuickBooks', 'Sage'];
+
+const whyChooseUs = [
+  'Xero Certified Specialist (Level 3)',
+  'Migration Specialist',
+  'Cloud accounting expertise',
+  'AR & revenue cycle management',
+  'GST/HST compliance',
+];
+
 const values = [
   {
     title: 'Clean Books Every Month',
@@ -65,6 +75,26 @@ export default function AboutSection({ valuesImage }) {
               We want to understand your business before we touch a single number. 
               That's the foundation every great financial relationship is built on.
             </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="mt-8 border border-border bg-secondary/40 p-5"
+            >
+              <p className="text-sm font-medium text-foreground mb-3">
+                Certified in Xero (L1–L3 + Migration Specialist)
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Full-cycle accounting and structured financial reporting for growing businesses.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {tools.map((tool) => (
+                  <span key={tool} className="border border-border bg-background px-3 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -80,6 +110,25 @@ export default function AboutSection({ valuesImage }) {
             <div className="absolute inset-0 border border-accent/20" />
           </motion.div>
         </div>
+
+        {/* Why Choose Us */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="mb-16 border border-border bg-secondary/30 p-6 md:p-8"
+        >
+          <span className="text-accent text-sm font-medium tracking-[0.25em] uppercase block mb-4">
+            Why Choose Us
+          </span>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {whyChooseUs.map((reason) => (
+              <div key={reason} className="border-t border-border pt-4">
+                <p className="text-sm font-medium leading-relaxed">{reason}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Values Grid */}
         <div className="grid sm:grid-cols-2 gap-8 md:gap-12">

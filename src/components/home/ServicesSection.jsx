@@ -4,6 +4,19 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import LetterReveal from '../LetterReveal';
 
+const xeroServices = [
+  {
+    title: 'Xero Bookkeeping Services',
+    description: 'Structured Xero bookkeeping support for accurate, month-ready records and practical financial visibility.',
+    features: ['Xero bookkeeping', 'Bank reconciliation & cash coding', 'Chart of accounts setup', 'Monthly reporting', 'GST/HST tracking'],
+  },
+  {
+    title: 'Xero Migration Services',
+    description: 'Careful Xero setup and migration support for businesses moving from QuickBooks, Excel, or cleanup-heavy files.',
+    features: ['QuickBooks → Xero migration', 'Excel → Xero setup', 'Data cleanup', 'Opening balances setup'],
+  },
+];
+
 const services = [
   {
     title: 'Clean Monthly Bookkeeping',
@@ -66,6 +79,46 @@ export default function ServicesSection({ serviceImages }) {
               <ChevronRight size={20} />
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-8 border border-primary-foreground/15 bg-primary-foreground/5 p-6 md:p-8"
+        >
+          <p className="text-accent text-xs font-medium tracking-[0.22em] uppercase mb-3">
+            Xero Certified (L1–L3 + Migration Specialist)
+          </p>
+          <h3 className="font-heading text-2xl md:text-3xl font-semibold mb-3">Cloud accounting built around Xero</h3>
+          <p className="text-primary-foreground/70 leading-relaxed max-w-3xl">
+            We support accurate Xero workflows from day-to-day bookkeeping through migration, cleanup,
+            reporting, and GST/HST-ready records.
+          </p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {xeroServices.map((service, i) => (
+            <motion.div
+              key={service.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
+              className="border border-primary-foreground/15 bg-primary-foreground/[0.03] p-6 md:p-8"
+            >
+              <h3 className="font-heading text-2xl font-semibold mb-3">{service.title}</h3>
+              <p className="text-primary-foreground/70 leading-relaxed mb-5">{service.description}</p>
+              <ul className="grid gap-2">
+                {service.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm text-primary-foreground/65">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
       </div>
 
