@@ -193,13 +193,13 @@ export default function Contact() {
             <div>
               <h3 className="font-heading text-lg font-semibold mb-6">Direct Contact</h3>
               <div className="space-y-5">
-                <a href="tel:+14035128898" className="flex items-center gap-4 group">
+                <a href="tel:+15878874681" className="flex items-center gap-4 group">
                   <div className="w-10 h-10 border border-border flex items-center justify-center group-hover:border-accent transition-colors">
                     <Phone size={16} className="text-accent" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wide">Phone</p>
-                    <p className="text-sm font-medium">+1 (403) 512-8898</p>
+                    <p className="text-sm font-medium">+1 587 887 4681</p>
                   </div>
                 </a>
                 <a href="mailto:info@trustedfinr.com" className="flex items-center gap-4 group">

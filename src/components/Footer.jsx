@@ -52,11 +52,11 @@ export default function Footer() {
             </h4>
             <div className="space-y-4">
               <a
-                href="tel:+14035128898"
+                href="tel:+15878874681"
                 className="flex items-center gap-3 text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
               >
                 <Phone size={16} className="text-accent" />
-                +1 (403) 512-8898
+                +1 587 887 4681
               </a>
               <a
                 href="mailto:info@trustedfinr.com"
