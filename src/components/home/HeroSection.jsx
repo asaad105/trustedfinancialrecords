@@ -93,7 +93,12 @@ export default function HeroSection({ heroImage }) {
             </span>
             <img
               src="/xero-migration-specialist.svg"
-              alt="Xero Migration Specialist"
+              alt="Xero Certified Specialist badge"
+              className="h-16 w-16 rounded-xl shadow-sm"
+            />
+            <img
+              src="/xero-migration-specialist-badge.svg"
+              alt="Xero Migration Specialist badge"
               className="h-16 w-16 rounded-xl shadow-sm"
             />
           </motion.div>
