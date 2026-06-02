@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import LetterReveal from '../LetterReveal';
 
 function AnimatedCounter({ target, suffix = '', prefix = '' }) {
@@ -78,8 +78,23 @@ export default function HeroSection({ heroImage }) {
           >
             Monthly bookkeeping and clear financial reporting for tech startups and 
             Canadian small businesses — delivered with warmth, precision, and a 
-            discovery call that actually listens.
+            discovery call that actually listens. We use Xero, QuickBooks, and Sage for cloud accounting.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.55 }}
+            className="flex flex-wrap items-center gap-3 mb-10"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-accent">
+              <CheckCircle2 size={14} />
+              Xero Certified Specialist (Level 3)
+            </span>
+            <span className="inline-flex items-center rounded-full border border-foreground/15 bg-background/70 px-3 py-1 text-xs font-semibold tracking-wide text-foreground/80 shadow-sm">
+              Xero
+            </span>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
