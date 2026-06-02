@@ -91,9 +91,11 @@ export default function HeroSection({ heroImage }) {
               <CheckCircle2 size={14} />
               Xero Certified Specialist (Level 3)
             </span>
-            <span className="inline-flex items-center rounded-full border border-foreground/15 bg-background/70 px-3 py-1 text-xs font-semibold tracking-wide text-foreground/80 shadow-sm">
-              Xero
-            </span>
+            <img
+              src="/xero-migration-specialist.svg"
+              alt="Xero Migration Specialist"
+              className="h-16 w-16 rounded-xl shadow-sm"
+            />
           </motion.div>
 
           <motion.div
