@@ -90,7 +90,7 @@ export default function Contact() {
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
             Whether you have a question about our services, need a custom quote, 
-            or just want to explore how we can help — our team is ready.
+            or just want to explore how we can help — our team is ready. We use Xero for accurate bookkeeping workflows.
           </p>
         </motion.div>
 
